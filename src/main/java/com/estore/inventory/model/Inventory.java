@@ -22,10 +22,10 @@ public class Inventory extends ResourceSupport {
 	@Id
 	@GeneratedValue
 	private Long inventoryId;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private Partner partner;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private Product product;
 	private Double price;

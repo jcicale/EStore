@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.estore.inventory.model.Inventory;
 import com.estore.inventory.service.InventoryService;
+import com.estore.order.model.Order;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -32,7 +33,7 @@ public class InventoryResource {
 	}
 
 	@GetMapping("{inventoryId}")
-	public Inventory getInventoryById(@PathVariable("contactId") Long inventoryId) {
+	public Inventory getInventoryById(@PathVariable("inventoryId") Long inventoryId) {
 		return inventoryService.getInventoryById(inventoryId);
 	}
 
@@ -42,5 +43,11 @@ public class InventoryResource {
 			return new ResponseEntity(HttpStatus.OK);
 		}
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public Inventory addInventory(@RequestBody Inventory inventory) {
+		inventory = inventoryService.addInventory(inventory);
+		return inventory;
 	}
 }

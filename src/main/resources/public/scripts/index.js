@@ -62,29 +62,11 @@ function cancelSave() {
 function refreshContactsList() {
 	list.show();
 	form.hide();
-	var type = $('input[name=type]:checked').val();
-	var url = type;
-
-	if (type != 'contact') {
-		var searchValue = $('#textSearch').val();
-		if (typeof searchValue === 'undefined' || !searchValue) {
-			showDialog("You need to type something to search", function() {
-				$('#textSearch').focus();
-			});
-		} else {
-			url += searchValue;
-			showDialogBlockDialog("Loading Data from Server");
-			$.getJSON(url).done(function(data) {
-				drawSearchResults(data);
-			});
-		}
-
-	} else {
-		showDialogBlockDialog("Loading Data from Server");
+	var url = "inventory";
+	showDialogBlockDialog("Loading Data from Server");
 		$.getJSON(url).done(function(data) {
 			drawSearchResults(data);
 		});
-	}
 
 }
 function milisToDate(time){
@@ -144,28 +126,12 @@ function drawSearchResults(data) {
 	var contactTableBody = $("#contactTableBody");
 	contactTableBody.empty();
 	for ( var item in data) {
-		var contact = data[item];
+		var inventory = data[item];
 		var tr = $("<tr>");
-		var tdImage = $("<td>");
-		var div = $("<div>");
-		$('<button title="Delete this contact">').html("X").attr("onclick", "deleteContact('" + contact.links[1].href + "')").appendTo(div);
-		$('<button title="Edit this contact">').html(contact.name).attr("onclick", "loadDataToForm('" + contact.links[0].href + "')").appendTo(div);
-		div.appendTo(tdImage);
-		$('<img class="listPreview">').attr("src", contact.links[2].href).appendTo(tdImage);
-		tdImage.appendTo(tr);
-		var tdPersonal = $("<td>");
-		var textPersonal = "-Email: " + contact.email + "\n";
-		textPersonal += "-Phone Number: " + contact.personalPhoneNumber + "\n";
-		textPersonal += "-Company: " + contact.company;
-		$('<textarea readonly="true">').html(textPersonal).appendTo(tdPersonal);
-		tdPersonal.appendTo(tr);
-		var tdAddress = $("<td>");
-		var textAddress = contact.address.street + " " + contact.address.unit + "\n";
-		textAddress += contact.address.city + " " + contact.address.state + ", " + contact.address.zip;
-		$('<textarea readonly="true">').html(textAddress).appendTo(tdAddress);
-		tdAddress.appendTo(tr);
+		var td = $("<td>").html(inventory.product.title);
+		td.appendTo(tr);
 		tr.appendTo(contactTableBody);
-		console.log(contact);
+		console.log(inventory);
 	}
 	hideDialogBlockDialog();
 }
