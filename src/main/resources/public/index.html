@@ -7,13 +7,14 @@
 <script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <link type="text/css" rel="stylesheet" href="/styles/main.css" />
+<link href="https://fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet">
 <script src="scripts/index.js"></script>
 </head>
 <body>
 	<header>
 		<ul>
 			<li>
-				<a href="index.html">Contacts</a>
+				<a href="index.html">E-Store</a>
 			</li>
 		</ul>
 	</header>
@@ -28,8 +29,11 @@
 		</form>
 	</section>
 	<section id="list">
-		<button title="Create New Contact" onclick="loadDataToForm(0)">New Contact</button>
-		<table id="contactTable">
+<!-- 		<button title="Create New Contact" onclick="loadDataToForm(0)">New Contact</button> -->
+		<div class="ui-widget">
+  			<input id="product-search" placeholder="Search">
+		</div>
+		<!-- <table id="contactTable">
 			<thead>
 				<tr>
 					<th>Product</th>
@@ -40,7 +44,9 @@
 			</thead>
 			<tbody id="contactTableBody">
 			</tbody>
-		</table>
+		</table> -->
+		<div id="items">
+		</div>
 	</section>
 	<div id="dialog-message" title="Message From Server" style="display: none">
 		<p id="dialogMessageText"></p>

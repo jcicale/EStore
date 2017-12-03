@@ -24,14 +24,15 @@ main {
 
 header {
 	background-color: #333399;
-	font-family: 'Museo sans';
+	font-family: 'Lato', sans-serif;
 	font-size: 18px;
 	color: white;
 	max-width: 60%;
 }
 
 footer {
-	background-color: #333;
+	font-fmaily: 'Lato', sans-serif;
+	background-color: #008080;
 	color: white;
 	max-width: 60%;
 }
@@ -41,7 +42,7 @@ ul {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #333;
+	background-color: #008080;
 }
 
 li {
@@ -110,6 +111,61 @@ input[type=button]:hover {
 	border: 1px solid black;
 	margin-top: 20px;
 }
+
+#product-search {
+	padding: 1em;
+    margin: .7em 0;
+    padding-left: 5em;
+    width: 87%;
+    border: 1px solid #e0ddd5;
+    font-size: 1em;
+    background-image: url(http://i47.tinypic.com/r02vbq.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    outline: none;
+}
+
+#items {
+	display: flex;
+	flex-wrap: wrap;
+	margin-left: -.5em;
+	margin-top: -.5em;
+	font-family: "Lato", sans-serif;
+}
+#items .item {
+	flex: 1 0 10em;
+  	box-sizing: border-box;
+  	background: #e0ddd5;
+  	font-size: .8em;
+  	color: #171e42;
+  	padding: 10px;
+	margin-left: 10px;
+	margin-top: 10px;	
+}
+
+#items .item img {
+	border-radius: 1em;
+}
+
+#items .item p{
+	margin: 0;
+}
+	
+#items .item p.product-name{
+	font-weight: 700;
+}
+
+#items .item button {
+	background-color: #008080;
+    margin-top: .5em;
+    color: #ffffff;
+    border-radius: 1em;
+}
+
+button:focus {
+	outline:0;
+}
+
 
 .ui-dialog-titlebar-close {
 	visibility: hidden;

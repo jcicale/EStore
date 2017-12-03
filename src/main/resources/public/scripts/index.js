@@ -121,16 +121,39 @@ function loadDataToForm(varUrl) {
 		});
 	}
 }
+$( function() {
+    var availableProducts = [
+      "FitBit",
+      "Bluetooth Headphones",
+      "Laptop Bag",
+      "The Odyssey"
+    ];
+    $( "#product-search" ).autocomplete({
+      source: availableProducts
+    });
+  } );
+
+
 function drawSearchResults(data) {
 	console.log(data);
-	var contactTableBody = $("#contactTableBody");
-	contactTableBody.empty();
+	var itemsContainer = $("#items");
+	itemsContainer.empty();
 	for ( var item in data) {
 		var inventory = data[item];
-		var tr = $("<tr>");
-		var td = $("<td>").html(inventory.product.title);
-		td.appendTo(tr);
-		tr.appendTo(contactTableBody);
+		var div = $("<div class='item'>");
+		var img = $("<img src = 'http://placebear.com/150/150'>")
+		var p0 = $("<p class='product-name'>").html(inventory.product.title);
+		var p1 = $("<p>").html('Seller: ' + inventory.partner.name);
+		var p2 = $("<p>").html('In stock: ' + inventory.quantity);
+		var p3 = $("<p>").html('Price: $' + inventory.price);
+		var button = $("<button class='ui-button ui-widget ui-corner-all'>").html("Add to Cart");
+		img.appendTo(div);
+		p0.appendTo(div);
+		p1.appendTo(div);
+		p2.appendTo(div);
+		p3.appendTo(div);
+		button.appendTo(div);
+		div.appendTo(itemsContainer);
 		console.log(inventory);
 	}
 	hideDialogBlockDialog();
