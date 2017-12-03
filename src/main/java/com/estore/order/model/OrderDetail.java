@@ -13,8 +13,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.estore.inventory.model.Inventory;
 
 @Entity
@@ -23,11 +21,11 @@ import com.estore.inventory.model.Inventory;
 @NamedQueries({
 		@NamedQuery(query = "FROM OrderDetail o WHERE o.inventory.partner.partnerId = :partnerId", name = "OrderDetail.list_OrderDetails_by_partnerId"),
 		@NamedQuery(query = "FROM OrderDetail o WHERE o.inventory.partner.partnerId = :partnerId AND o.orderState = :orderState", name = "OrderDetail.list_OrderDetails_by_partnerId_and_orderState") })
-public class OrderDetail extends ResourceSupport {
+public class OrderDetail {
 	@Id
 	@GeneratedValue
 	private Long orderDetailId;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private Inventory inventory;
 	private Integer quantity;

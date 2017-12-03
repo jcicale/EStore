@@ -7,12 +7,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import org.springframework.hateoas.ResourceSupport;
-
 @Entity
 @Table(name = "tblPaymentMethod")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class PaymentMethod extends ResourceSupport {
+public class PaymentMethod {
 	@Id
 	@GeneratedValue
 	private Long paymentId;

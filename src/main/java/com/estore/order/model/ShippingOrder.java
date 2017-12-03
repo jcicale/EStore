@@ -15,7 +15,7 @@ import com.estore.inventory.model.Inventory;
 @Entity
 @Table(name = "tblShippingOrder")
 public class ShippingOrder extends OrderDetail {
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private Address shippingAddress;
 	private Calendar estimatedDelivery;

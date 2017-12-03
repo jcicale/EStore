@@ -12,7 +12,7 @@ public class CustomerService {
 	@Autowired
 	private CustomerDao customerDao;
 
-	public Iterable<Customer> listAll() {
+	public Iterable<Customer> listAllCustomers() {
 		Iterable<Customer> listCustomer = customerDao.findAll();
 		return listCustomer;
 	}

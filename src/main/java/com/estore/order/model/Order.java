@@ -17,7 +17,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.hateoas.ResourceSupport;
 
 import com.estore.customer.model.Address;
 import com.estore.customer.model.Customer;
@@ -28,7 +27,7 @@ import com.estore.customer.model.Customer;
 		@NamedQuery(query = "FROM Order o WHERE o.customer.customerId = :customerId", name = "Order.list_Orders_by_customerId"),
 		@NamedQuery(query = "FROM Order o WHERE o.customer.customerId = :customerId AND o.orderState = :orderState", name = "Order.list_Orders_by_customerId_and_orderState") })
 
-public class Order extends ResourceSupport {
+public class Order {
 	@Id
 	@GeneratedValue
 	private Long orderId;
@@ -37,11 +36,11 @@ public class Order extends ResourceSupport {
 	@JoinColumn(nullable = false)
 	private List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
 	private String paymentStatus;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private Customer customer;
 	private String orderState;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private Address billingAddress;
 	private Double total;

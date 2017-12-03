@@ -19,10 +19,10 @@ public class Refund extends ResourceSupport {
 	private Long refundId;
 	private String refundStatus;
 	private Double total;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private OrderDetail orderDetail;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	private PaymentMethod paymentMethod;
 

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.estore.inventory.model.Inventory;
 import com.estore.inventory.service.InventoryService;
-import com.estore.order.model.Order;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -44,7 +43,7 @@ public class InventoryResource {
 		}
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public Inventory addInventory(@RequestBody Inventory inventory) {
 		inventory = inventoryService.addInventory(inventory);
