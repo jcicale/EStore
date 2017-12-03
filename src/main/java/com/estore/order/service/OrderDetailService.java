@@ -15,25 +15,25 @@ import com.estore.order.model.ShippingOrder;
 @Service
 public class OrderDetailService {
 	@Autowired
-	OrderDetailDao dao;
+	OrderDetailDao orderDetailDao;
 	@Autowired
 	InventoryDao inventoryDao;
 
 	public OrderDetail save(OrderDetail orderDetail) {
-		return dao.save(orderDetail);
+		return orderDetailDao.save(orderDetail);
 	}
 
 	public Iterable<OrderDetail> listAll() {
-		return dao.findAll();
+		return orderDetailDao.findAll();
 	}
 
 	public OrderDetail getById(Long orderDetailId) {
-		return dao.findOne(orderDetailId);
+		return orderDetailDao.findOne(orderDetailId);
 	}
 
 	public boolean remove(Long orderDetailId) {
 		try {
-			dao.delete(orderDetailId);
+			orderDetailDao.delete(orderDetailId);
 		} catch (Exception e) {
 			return false;
 		}
@@ -44,7 +44,6 @@ public class OrderDetailService {
 		if (orderDetail.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP)) {
 			orderDetail.getInventory()
 					.setQuantity(orderDetail.getInventory().getQuantity() - orderDetail.getQuantity());
-			// inventoryDao.save(orderDetail.getInventory());
 			orderDetail.setOrderState(EStoreConstants.ORDER_STATUS_SHIPPED);
 			orderDetail.setTrackingNumber(trackingNumber);
 			Calendar deliveryDate = Calendar.getInstance();
@@ -57,11 +56,11 @@ public class OrderDetailService {
 	}
 
 	public List<OrderDetail> listAllByPartnerId(Long partnerId) {
-		return dao.list_OrderDetails_by_partnerId(partnerId);
+		return orderDetailDao.list_OrderDetails_by_partnerId(partnerId);
 	}
 
 	public List<OrderDetail> listAllByPartnerId_OrderState(Long partnerId, String orderState) {
-		return dao.list_OrderDetails_by_partnerId_and_orderState(partnerId, orderState);
+		return orderDetailDao.list_OrderDetails_by_partnerId_and_orderState(partnerId, orderState);
 	}
 
 	public boolean orderDelivered(ShippingOrder orderDetail, Calendar delivered) {
