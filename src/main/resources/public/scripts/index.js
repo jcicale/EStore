@@ -1,5 +1,8 @@
 var list;
 var form;
+var customerId=1;
+var billingAddressId = 2;
+var shippingAddressId = 1;
 $(function() {
 	list = $('#list');
 	form = $('#form');
@@ -136,27 +139,65 @@ $( function() {
 
 function drawSearchResults(data) {
 	console.log(data);
-	var itemsContainer = $("#items");
-	itemsContainer.empty();
+	$("#items").empty();
 	for ( var item in data) {
 		var inventory = data[item];
-		var div = $("<div class='item'>");
-		var img = $("<img src = 'http://placebear.com/150/150'>")
-		var p0 = $("<p class='product-name'>").html(inventory.product.title);
-		var p1 = $("<p>").html('Seller: ' + inventory.partner.name);
-		var p2 = $("<p>").html('In stock: ' + inventory.quantity);
-		var p3 = $("<p>").html('Price: $' + inventory.price);
-		var button = $("<button class='ui-button ui-widget ui-corner-all'>").html("Add to Cart");
-		img.appendTo(div);
-		p0.appendTo(div);
-		p1.appendTo(div);
-		p2.appendTo(div);
-		p3.appendTo(div);
-		button.appendTo(div);
-		div.appendTo(itemsContainer);
-		console.log(inventory);
+		drawInventory(inventory,$("#items"),true)
 	}
 	hideDialogBlockDialog();
+}
+
+function drawInventory(inventory, parent, isList){
+	var div = $("<div class='item'>");
+	var img = $("<img src = 'http://placebear.com/150/150'>")
+	var p0 = $("<p class='product-name'>").html(inventory.product.title);
+	var p1 = $("<p>").html('Seller: ' + inventory.partner.name);
+	var p2 = $("<p>").html('In stock: ' + inventory.quantity);
+	var p3 = $("<p>").html('Price: $' + inventory.price);
+	img.appendTo(div);
+	p0.appendTo(div);
+	p1.appendTo(div);
+	p2.appendTo(div);
+	p3.appendTo(div);
+	var rel = "";
+	if(isList){
+		rel = "loadReviewOrder('" + lookup(inventory.links,"rel","self").href +"','" + lookup(inventory.links,"rel","save").href +"')";
+	var button = $('<button class="ui-button ui-widget ui-corner-all" onclick="' + rel + '">').html("Add to Cart");
+	button.appendTo(div);
+	}
+	div.appendTo(parent);
+	console.log(inventory);
+}
+
+function lookup(array, prop, value) {
+    for (var i = 0, len = array.length; i < len; i++)
+        if (array[i] && array[i][prop] === value) return array[i];
+}
+
+function loadReviewOrder(selfLink, placeOrderLink){
+	loadInventoryDetailsToReviewOrder(selfLink);
+	$(function() {
+		$("#dialogPlaceOrder").dialog({
+			modal : true,
+			buttons : {
+				"Place Order" : function() {
+					$(this).dialog("close");
+					placeOrder(placeOrderLink);
+				},
+				Cancel : function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+	});
+}
+
+function loadInventoryDetailsToReviewOrder(selfLink){
+	showDialogBlockDialog("Loading Data from Server");
+	$.getJSON(selfLink).done(function(data) {
+		drawInventory(data,$('#inventoryDetails'),false);
+		hideDialogBlockDialog();
+	});
 }
 
 function simplifyURL(varUrl) {
@@ -201,27 +242,35 @@ function getBase64Image(img) {
 	var dataURL = canvas.toDataURL("image/png");
 	return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
-function loadFormIntoContact() {
-	var base64 = getBase64Image(document.getElementById("profileImage"));
-	var contact = {
-		"contactId" : document.getElementById('contactId').value,
-		"name" : document.getElementById('name').value,
-		"company" : document.getElementById('company').value,
-		"profileImage" : base64,
-		"email" : document.getElementById('email').value,
-		"birthdate" : document.getElementById('birthdate').value,
-		"personalPhoneNumber" : document.getElementById('personalPhoneNumber').value,
-		"workPhoneNumber" : document.getElementById('workPhoneNumber').value,
-		"address" : {
-			"addressId" : document.getElementById('addressId').value,
-			"street" : document.getElementById('street').value,
-			"unit" : document.getElementById('unit').value,
-			"city" : document.getElementById('city').value,
-			"state" : document.getElementById('state').value,
-			"zip" : document.getElementById('zip').value
+function loadValuesIntoOrder() {
+	var order = {
+			"customerId": 1,
+			"billingAddressId": 2,
+			"orderDetails": [
+				{
+					"inventoryId": 1,
+					"quantity": 1,
+					"addressId": shippingAddressId
+				},
+				{
+					"inventoryId": 5,
+					"quantity": $('#quantity').val()	
+				}
+			],
+			"paymentMethod": [
+				{
+					"subTotal": 150,
+					"transactionId": "XVF1022",
+					"accountEmail": "julia.cicale@gmail.com"
+				}
+			]
 		}
-	}
-	return contact;
+	return order;
+}
+function placeOrder(submitURL){
+	var order = loadValuesIntoOrder();
+	console.log(order);
+	//submit
 }
 function saveContact(varUrl) {
 	showDialogBlockDialog("Saving");

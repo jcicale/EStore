@@ -5,9 +5,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.estore.SuperLink;
 import com.estore.inventory.dao.InventoryDao;
 import com.estore.inventory.model.Inventory;
 import com.estore.inventory.resource.InventoryResource;
+import com.estore.order.resource.OrderResource;
 
 @Service
 public class InventoryService {
@@ -19,7 +21,7 @@ public class InventoryService {
 		Iterable<Inventory> listInventory = inventoryDao.findAll();
 		for (Inventory inventory : listInventory) {
 			inventory.add(linkTo(InventoryResource.class).slash(inventory.getInventoryId()).withSelfRel());
-
+			inventory.add(new SuperLink(linkTo(OrderResource.class).withRel("save"),"POST"));
 		}
 		return listInventory;
 	}
@@ -35,6 +37,8 @@ public class InventoryService {
 
 	public Inventory getInventoryById(Long inventoryId) {
 		Inventory inventory = inventoryDao.findOne(inventoryId);
+		inventory.add(linkTo(InventoryResource.class).slash(inventory.getInventoryId()).withSelfRel());
+		inventory.add(new SuperLink(linkTo(OrderResource.class).withRel("save"),"POST"));
 		return inventory;
 	}
 
