@@ -11,6 +11,7 @@ body {
 	text-align: center;
 	padding-left: 20%;
 	padding-right: 20%;
+	font-family: 'Lato', sans-serif
 }
 
 #profileImage {
@@ -24,14 +25,12 @@ main {
 
 header {
 	background-color: #333399;
-	font-family: 'Lato', sans-serif;
 	font-size: 18px;
 	color: white;
 	max-width: 60%;
 }
 
 footer {
-	font-fmaily: 'Lato', sans-serif;
 	background-color: #008080;
 	color: white;
 	max-width: 60%;
@@ -130,7 +129,6 @@ input[type=button]:hover {
 	flex-wrap: wrap;
 	margin-left: -.5em;
 	margin-top: -.5em;
-	font-family: "Lato", sans-serif;
 }
 #items .item {
 	flex: 1 0 10em;
@@ -143,23 +141,63 @@ input[type=button]:hover {
 	margin-top: 10px;	
 }
 
-#items .item img {
+.item img {
 	border-radius: 1em;
 }
 
-#items .item p{
+.item p{
 	margin: 0;
 }
 	
-#items .item p.product-name{
+.item p.product-name{
 	font-weight: 700;
 }
 
-#items .item button {
+.item button {
 	background-color: #008080;
     margin-top: .5em;
     color: #ffffff;
     border-radius: 1em;
+}
+
+#dialogPlaceOrder {
+	font-family: "Lato", sans-serif;
+}
+
+form .fields{
+	display: none;
+}
+
+div.paypal-radio, div.credit-card-radio {
+	margin-top: 1em;
+}
+
+div.credit-card-info, div.paypal-info {
+	display: inline-block;
+	margin: 0 2%;
+}
+
+div.credit-card-info label, div.name-on-card label, div.quantity-info label, div.paypal-info label {
+	float: left;
+	text-align: left;
+    font-size: .8em;
+}
+
+div.paypal-info {
+	width: 45%;
+}
+
+div.name-on-card, div.quantity-info {
+	width: 95%;
+    margin: auto;
+}
+
+div.credit-card-number {
+	width: 45%;
+}
+
+div.security-code, div.expiration-date {
+	width: 20%;
 }
 
 button:focus {

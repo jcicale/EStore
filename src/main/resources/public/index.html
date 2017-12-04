@@ -4,8 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Solstice Demo</title>
 <link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+<link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+    rel="stylesheet" type="text/css" />
 <script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <link type="text/css" rel="stylesheet" href="/styles/main.css" />
 <link href="https://fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet">
 <script src="scripts/index.js"></script>
@@ -33,18 +36,6 @@
 		<div class="ui-widget">
   			<input id="product-search" placeholder="Search">
 		</div>
-		<!-- <table id="contactTable">
-			<thead>
-				<tr>
-					<th>Product</th>
-					<th>Partner</th>
-					<th>Quantity</th>
-					<th>Price</th>
-				</tr>
-			</thead>
-			<tbody id="contactTableBody">
-			</tbody>
-		</table> -->
 		<div id="items">
 		</div>
 	</section>
@@ -57,8 +48,83 @@
 	<div id="dialogPlaceOrder" title="Review Order" style="display: none">
 		<div id="mainForm">
 		<div id="inventoryDetails"></div>
-			<input type="text" id="quantity" name="quantity" placeholder="0">
-		
+			<form id="place-order-form">
+				<fieldset>
+					<legend>Order Information </legend>
+					<div class="quantity-info">
+						<label for="quantity">Quantity</label>
+						<input 
+							data-validation="required"  
+							data-validation-error-msg="You must select a quantity greater than 0" 
+							type="text" id=select-quantity name="quantity" placeholder="0">
+					</div>
+					<div>
+						<label style="margin: 1em; vertical-align: middle;">Select a payment method: </label>
+					    <label for="credit-card-radio">Credit Card</label>
+					    <input 
+					    		data-validation="required"  
+					    		data-validation-error-msg="You must select a payment type" 
+					    		type="radio" name="payment-radio" value="credit-card-radio" id="credit-card-radio">
+					    <label for="paypal-radio">PayPal</label>
+					    <input 
+							data-validation="required"  
+					    		data-validation-error-msg="You must select a payment type" 
+							type="radio" name="payment-radio" value="paypal-radio" id="paypal-radio">
+					</div>
+				    <div class="paypal-radio fields">
+				    		<div class="paypal-info">
+				    			<label for="account-email">Account Email</label>
+							<input 
+								data-validation="email" 
+								data-validation-error-msg="Please enter a valid e-mail" 
+								data-validation="required" 
+								type="text" id="account-email" name="account-email" placeholder="example@domain.com">
+				    		</div>
+				    		<div class="paypal-info">
+				    			<label for="transaction-id">Transaction Id</label>
+							<input 
+							data-validation="custom" data-validation-regexp="[A-Z]{3}\d{4}" 
+							data-validation-error-msg="Transaction Id is required" 
+							type="text" id="transaction-id" name="transaction-id" placeholder="ABC1234">
+				    		</div>
+				    </div>
+				    <div class="credit-card-radio fields">
+				    		<div class="name-on-card">
+				    			<label for="name-on-card">Name on Card</label>
+							<input 
+							data-validation="required" 
+							data-validation-error-msg="Name on card is required" 
+							type="text" id="name-on-card" name="name-on-card" placeholder="John Smith">
+				    		</div>
+				    		<div class="credit-card-info credit-card-number">
+				    			<label for="credit-card-number">Credit Card Number</label>
+							<input 
+							data-validation="length" data-validation-length="16"
+							data-validation="number"
+							data-validation-error-msg="Enter a valid credit card number" 
+							type="text" id="credit-card-number" name="credit-card-number" placeholder="1234567890123456">
+				    		</div>
+				    		<div class="credit-card-info expiration-date">
+				    			<label for="expiration-date">Expiration Date</label>
+							<input 
+							data-validation="custom" data-validation-regexp="(?:0[1-9]|1[0-2])\/[0-9]{2}"
+							data-validation-error-msg="Enter a valid expiration date" 
+							type="text" id="expiration-date" name="expiration-date" placeholder="05/20">
+				    		</div>
+						<div class="credit-card-info security-code">
+							<label for="security-code">Security Code</label>
+							<input 
+							data-validation="length" data-validation-length="3"
+							data-validation="number"
+							data-validation-error-msg="Enter a valid security code" 
+							type="text" id="security-code" name="security-code" placeholder="555">
+						</div>
+						
+				    </div>
+				    <p>Subtotal:</p>
+					<p id="subtotal"></p>
+				</fieldset>
+		  	</form>
 		</div>
 	</div>
 	</main>

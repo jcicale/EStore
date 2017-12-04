@@ -153,17 +153,21 @@ function drawInventory(inventory, parent, isList){
 	var p0 = $("<p class='product-name'>").html(inventory.product.title);
 	var p1 = $("<p>").html('Seller: ' + inventory.partner.name);
 	var p2 = $("<p>").html('In stock: ' + inventory.quantity);
-	var p3 = $("<p>").html('Price: $' + inventory.price);
 	img.appendTo(div);
 	p0.appendTo(div);
 	p1.appendTo(div);
 	p2.appendTo(div);
-	p3.appendTo(div);
 	var rel = "";
 	if(isList){
-		rel = "loadReviewOrder('" + lookup(inventory.links,"rel","self").href +"','" + lookup(inventory.links,"rel","save").href +"')";
-	var button = $('<button class="ui-button ui-widget ui-corner-all" onclick="' + rel + '">').html("Add to Cart");
-	button.appendTo(div);
+		var p3 = $("<p>").html('Price: $' + inventory.price);
+		p3.appendTo(div);
+		rel = "loadReviewOrder('" + lookup(inventory.links,"rel","self").href +"','" + lookup(inventory.links,"rel","save").href +"'," + inventory.inventoryId + ")";
+		var button = $('<button class="ui-button ui-widget ui-corner-all" onclick="' + rel + '">').html("Add to Cart");
+		p3.appendTo(div);
+		button.appendTo(div);
+	} else {
+		var p3 = $("<p id='price'>").html('Price: $' + inventory.price);
+		p3.appendTo(div);
 	}
 	div.appendTo(parent);
 	console.log(inventory);
@@ -174,29 +178,80 @@ function lookup(array, prop, value) {
         if (array[i] && array[i][prop] === value) return array[i];
 }
 
-function loadReviewOrder(selfLink, placeOrderLink){
+$.validate({
+    form : '#place-order-form',
+    onError : function($form) {
+      alert('Validation of form '+$form.attr('id')+' failed!');
+    },
+    onSuccess : function($form) {
+      alert('The form '+$form.attr('id')+' is valid!');
+      return false; // Will stop the submission of the form
+    },
+  });
+
+function loadReviewOrder(selfLink, placeOrderLink, inventoryId){
 	loadInventoryDetailsToReviewOrder(selfLink);
+	$('#place-order-form').get(0).reset();
+	$(".fields").hide();
 	$(function() {
 		$("#dialogPlaceOrder").dialog({
 			modal : true,
 			buttons : {
 				"Place Order" : function() {
-					$(this).dialog("close");
-					placeOrder(placeOrderLink);
-				},
+						$("#place-order-form").submit();	
+					},
 				Cancel : function() {
 					$(this).dialog("close");
 				}
-			}
+			},
+			width: "60%",
+			maxWidth: "500px",
+			position: { my: 'top', at: 'top+50' },
 		});
+		$.validate({
+		    form : '#place-order-form',
+		    onError : function($form) {
+		      alert('Some fields are missing or incorrect. Please fix the errors and try again.');
+		    },
+		    onSuccess : function($form) {
+		      placeOrder(placeOrderLink, inventoryId);
+		      $("#dialogPlaceOrder").dialog("close");
+		      return false;
+		    },
+		  });
+		$( "#place-order-form").on('submit', function(e) {
+			e.preventDefault();
+			placeOrder(placeOrderLink, inventoryId);
+			$("#dialogPlaceOrder").dialog("close");
+		})
+	    $( "#credit-card-radio" ).checkboxradio({
+	      icon: false
+	    });
+	    $( "#paypal-radio" ).checkboxradio({
+		      icon: false
+		});
+	    $('#select-quantity').on('change keyup paste', function() {
+	        var quantity = $(this).val();
+	        var price = document.querySelector('p#price').innerHTML.replace(/\D/g,'');
+	        console.log(price);
+	        document.querySelector('#subtotal').innerHTML = "$" + quantity * price;
+	    });
+	    $('input[name="payment-radio"]').click(function(){
+	        var inputValue = $(this).val();
+	        var targetFields = $("." + inputValue);
+	        $(".fields").not(targetFields).hide();
+	        $(targetFields).show();
+	    });
+	    
 	});
 }
 
 function loadInventoryDetailsToReviewOrder(selfLink){
-	showDialogBlockDialog("Loading Data from Server");
+//	showDialogBlockDialog("Loading Data from Server"); //commented out for now due to jquery ui bug
 	$.getJSON(selfLink).done(function(data) {
+		$('#inventoryDetails').empty();
 		drawInventory(data,$('#inventoryDetails'),false);
-		hideDialogBlockDialog();
+//		hideDialogBlockDialog();
 	});
 }
 
@@ -242,33 +297,42 @@ function getBase64Image(img) {
 	var dataURL = canvas.toDataURL("image/png");
 	return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
-function loadValuesIntoOrder() {
+function loadValuesIntoOrder(inventoryId) {
 	var order = {
 			"customerId": 1,
 			"billingAddressId": 2,
 			"orderDetails": [
 				{
-					"inventoryId": 1,
-					"quantity": 1,
-					"addressId": shippingAddressId
-				},
-				{
-					"inventoryId": 5,
-					"quantity": $('#quantity').val()	
+					
 				}
+				
 			],
 			"paymentMethod": [
 				{
-					"subTotal": 150,
-					"transactionId": "XVF1022",
-					"accountEmail": "julia.cicale@gmail.com"
+					
 				}
 			]
 		}
+	order.orderDetails.inventoryId = inventoryId;
+	order.orderDetails.quantity = parseInt($('#select-quantity').val());
+	order.orderDetails.addressId = 1;
+	
+	var paymentType = $('input[name="payment-radio"]:checked').val();
+	if (paymentType === "credit-card-radio") {
+		order.paymentMethod.subTotal = parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g,''));
+		order.paymentMethod.creditCardNumber = $("#credit-card-number").val();
+		order.paymentMethod.nameOnCard = $("#name-on-card").val();
+		order.paymentMethod.securityCode = $("#security-code").val();
+		order.paymentMethod.validDate = $("#expiration-date").val();
+	} else if (paymentType === "paypal-radio") {
+		order.paymentMethod.subTotal = parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g,''));
+		order.paymentMethod.transactionId = $("#transaction-id").val();
+		order.paymentMethod.accountEmail = $("#account-email").val();
+	}
 	return order;
 }
-function placeOrder(submitURL){
-	var order = loadValuesIntoOrder();
+function placeOrder(submitURL, inventoryId){
+	var order = loadValuesIntoOrder(inventoryId);
 	console.log(order);
 	//submit
 }
