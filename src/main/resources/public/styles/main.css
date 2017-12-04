@@ -9,9 +9,9 @@ body {
 	height: 100%;
 	width: 100%;
 	text-align: center;
-	padding-left: 20%;
-	padding-right: 20%;
-	font-family: 'Lato', sans-serif
+	padding-left: 15%;
+	padding-right: 15%;
+	font-family: 'Lato', sans-serif;
 }
 
 #profileImage {
@@ -130,6 +130,7 @@ input[type=button]:hover {
 	margin-left: -.5em;
 	margin-top: -.5em;
 }
+
 #items .item {
 	flex: 1 0 10em;
   	box-sizing: border-box;
@@ -204,6 +205,80 @@ button:focus {
 	outline:0;
 }
 
+/*  representatives styles  */
+table {
+	white-space: pre-wrap;
+}
+
+.order {
+	border: 1px solid #1a7f7f;
+    background-color: #e0ddd5;
+}
+
+.order .order-item {
+	flex: 1 0 10em;
+  	box-sizing: border-box;
+  	background: #e0ddd5;
+  	font-size: .8em;
+  	color: #171e42;
+  	padding: 10px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+#orders th {
+    font-family: 'Lato-Light', sans-serif;
+    font-weight: 700;
+    font-size: .9em;
+    padding: 0 2em;
+}
+
+td.order-item.red{
+	color: #ea0000;
+	font-weight: 700;
+}
+td.order-item.green{
+	color: #009c1a;
+	font-weight: 700;
+}
+td.order-item.teal{
+	color: #1a7f7f;
+	font-weight: 700;
+}
+
+td.order-item.blue {
+	color: #0484c1;
+	font-weight: 700;
+}
+
+td:last-child {
+    position: relative;
+}
+.action-required-icon {
+  	position: absolute;
+  	display: none;
+  	right: -20px;
+  	top: 50%;
+}
+
+.show-icon {
+  	display: block;
+}
+
+button.link {
+	width: 80%;
+    margin: 1em auto;
+    padding: .6em;
+    background-color: #1a7f7f;
+    color: #ffffff;
+}
+
+button.link.red {
+	background-color: #ea0000;
+}
+button.link.green {
+	background-color: #009c1a;
+}
 
 .ui-dialog-titlebar-close {
 	visibility: hidden;
