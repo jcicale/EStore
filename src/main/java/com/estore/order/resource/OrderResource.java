@@ -58,7 +58,7 @@ public class OrderResource {
 	}
 
 	@RequestMapping(value = "{orderId}/orderDetail/{orderDetailId}/cancel", method = RequestMethod.PUT)
-	public ResponseEntity<String> acceptPayment(@PathVariable("orderId") Long orderId,
+	public ResponseEntity<String> cancelOrderDetail(@PathVariable("orderId") Long orderId,
 			@PathVariable("orderDetailId") Long orderDetailId) {
 		if (orderService.cancelOrderDetail(orderService.getOrderById(orderId), orderDetailId)) {
 			return new ResponseEntity<String>(HttpStatus.OK);
@@ -71,6 +71,14 @@ public class OrderResource {
 			@PathVariable("orderDetailId") Long orderDetailId, @PathVariable("trackingNumber") String trackingNumber) {
 		if (orderDetailService.shipOrderDetail((ShippingOrder) orderDetailService.getById(orderDetailId),
 				trackingNumber)) {
+			return new ResponseEntity<String>(HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+	}
+
+	@RequestMapping(value = "{orderId}/cancel", method = RequestMethod.PUT)
+	public ResponseEntity<String> cancelOrder(@PathVariable("orderId") Long orderId) {
+		if (orderService.cancelOrder(orderService.getOrderById(orderId))) {
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);

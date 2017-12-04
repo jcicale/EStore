@@ -45,7 +45,7 @@ public class OrderResourceTests {
 	private MockMvc mvc;
 
 	@Test
-	public void addOrder() throws Exception {
+	public void addOrderTest() throws Exception {
 		Customer customer = customerService.getCustomerById(Long.valueOf(1));
 		Inventory inventory = inventoryService.getInventoryById(Long.valueOf(1));
 		List<PaymentMethodRequest> paymentMethodRequest = new ArrayList<>();
@@ -62,8 +62,29 @@ public class OrderResourceTests {
 	}
 
 	@Test
-	public void acceptPayment() throws Exception {
+	public void acceptOrderPaymentTest() throws Exception {
 		mvc.perform(put("/order/1/accept")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void fulfillOrderTest() throws Exception {
+		mvc.perform(put("/order/1/fulfill")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void shipOrderDetailTest() throws Exception {
+		mvc.perform(put("/order/15/orderDetail/5/ship/999999999999")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void cancelOrderDetailTest() throws Exception {
+		mvc.perform(put("/order/1/orderDetail/1/cancel")).andExpect(status().isOk());
+	}
+	
+	
+	@Test
+	public void cancelOrderTest() throws Exception {
+		mvc.perform(put("/order/5/cancel")).andExpect(status().isOk());
 	}
 
 }

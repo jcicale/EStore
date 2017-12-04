@@ -27,7 +27,7 @@ public class InventoryService {
 	}
 
 	public Iterable<Inventory> list_Inventory_by_keywords(String keywords) {
-		Iterable<Inventory> listInventory = inventoryDao.list_Inventory_by_keywords(keywords);
+		Iterable<Inventory> listInventory = inventoryDao.list_Inventory_by_keywords("%" + keywords.trim().replace(" ", "%") + "%");
 		for (Inventory inventory : listInventory) {
 			inventory.add(linkTo(InventoryResource.class).slash(inventory.getInventoryId()).withSelfRel());
 

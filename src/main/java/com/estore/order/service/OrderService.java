@@ -102,12 +102,12 @@ public class OrderService {
 									EStoreUtils.CalendarToString(Calendar.getInstance(), EStoreConstants.DATE_FORMAT)
 											+ " 09:00 - 17:00");
 							orderDetail.setOrderState(EStoreConstants.ORDER_STATUS_READY_TO_PICK_UP);
-							orderDetail.getInventory()
-									.setQuantity(orderDetail.getInventory().getQuantity() - orderDetail.getQuantity());
 
 						} else {
 							orderDetail.setOrderState(EStoreConstants.ORDER_STATUS_READY_TO_SHIP);
 						}
+						orderDetail.getInventory()
+								.setQuantity(orderDetail.getInventory().getQuantity() - orderDetail.getQuantity());
 					}
 				}
 			}
@@ -168,8 +168,23 @@ public class OrderService {
 		}
 		return order != null;
 	}
-	
 
+	public boolean cancelOrder(Order order) {
+		if (order != null && order.getOrderState().equals(EStoreConstants.ORDER_STATUS_PENDING)) {
+			order.setOrderState(EStoreConstants.ORDER_STATUS_CANCELED);
+			if (order.getPaymentMethod() != null && order.getPaymentMethod().size() > 0) {
+				for (PaymentMethod paymentMethod : order.getPaymentMethod()) {
+					Refund refund = new Refund(null, EStoreConstants.PAYMENT_STATUS_PENDING,
+							paymentMethod.getSubTotal(), order.getOrderDetails().get(0), paymentMethod);
+					refund = refundDao.save(refund);
+					paymentMethod.setPaymentStatus(EStoreConstants.PAYMENT_STATUS_REFUNDED);
+				}
+			}
+			order = orderDao.save(order);
+			return order != null;
+		}
+		return false;
+	}
 
 	public Order toOrder(OrderRequest orderRequest) {
 		List<OrderDetail> listOrderDetail = new ArrayList<>();

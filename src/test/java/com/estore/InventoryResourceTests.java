@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,9 @@ public class InventoryResourceTests {
 	private MockMvc mvc;
 
 	@Test
-	public void contextLoads() {
+	public void listInventory() throws Exception {
+		mvc.perform(get("/inventory/product/FitBit")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.notNullValue()))
+		.andExpect(jsonPath("$", Matchers.hasSize(10)));
 	}
 
 	@Test
@@ -39,7 +42,7 @@ public class InventoryResourceTests {
 				.andExpect(jsonPath("$.price", Matchers.is(150.0)));
 	}
 
-	@Test
+	@Test@Ignore
 	public void addInventory() throws Exception {
 		Inventory inventory = inventoryService.getInventoryById(Long.valueOf(1));
 		mvc.perform(post("/inventory").content(EStoreUtils.asJsonString(inventory))

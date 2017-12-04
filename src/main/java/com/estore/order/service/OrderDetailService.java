@@ -42,8 +42,6 @@ public class OrderDetailService {
 
 	public boolean shipOrderDetail(ShippingOrder orderDetail, String trackingNumber) {
 		if (orderDetail.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP)) {
-			orderDetail.getInventory()
-					.setQuantity(orderDetail.getInventory().getQuantity() - orderDetail.getQuantity());
 			orderDetail.setOrderState(EStoreConstants.ORDER_STATUS_SHIPPED);
 			orderDetail.setTrackingNumber(trackingNumber);
 			Calendar deliveryDate = Calendar.getInstance();
