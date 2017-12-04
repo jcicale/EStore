@@ -37,7 +37,8 @@ public class OrderResource {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public Order addOrder(@RequestBody OrderRequest orderRequest) {
-		Order order = orderService.addOrder(orderService.toOrder(orderRequest));
+		Order order = orderService.toOrder(orderRequest);
+		order = orderService.addOrder(order);
 		return order;
 	}
 

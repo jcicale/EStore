@@ -1,6 +1,6 @@
 var list;
 var form;
-var customerId=1;
+var customerId = 1;
 var billingAddressId = 2;
 var shippingAddressId = 1;
 $(function() {
@@ -11,6 +11,12 @@ $(function() {
 	});
 	refreshContactsList();
 });
+function loadTestValues(){
+	$("#credit-card-number").val("1234567890123456");
+	$("#name-on-card").val("John Jones");
+	$("#security-code").val("111");
+	$("#expiration-date").val("12/10");
+}
 function showConfirmDialog(message, callback) {
 	$("#dialogMessageText").html(message);
 	$(function() {
@@ -67,12 +73,12 @@ function refreshContactsList() {
 	form.hide();
 	var url = "inventory";
 	showDialogBlockDialog("Loading Data from Server");
-		$.getJSON(url).done(function(data) {
-			drawSearchResults(data);
-		});
+	$.getJSON(url).done(function(data) {
+		drawSearchResults(data);
+	});
 
 }
-function milisToDate(time){
+function milisToDate(time) {
 	var time = new Date().getTime();
 	var date = new Date(time);
 	return date.toString();
@@ -124,30 +130,24 @@ function loadDataToForm(varUrl) {
 		});
 	}
 }
-$( function() {
-    var availableProducts = [
-      "FitBit",
-      "Bluetooth Headphones",
-      "Laptop Bag",
-      "The Odyssey"
-    ];
-    $( "#product-search" ).autocomplete({
-      source: availableProducts
-    });
-  } );
-
+$(function() {
+	var availableProducts = [ "FitBit", "Bluetooth Headphones", "Laptop Bag", "The Odyssey" ];
+	$("#product-search").autocomplete({
+		source : availableProducts
+	});
+});
 
 function drawSearchResults(data) {
 	console.log(data);
 	$("#items").empty();
 	for ( var item in data) {
 		var inventory = data[item];
-		drawInventory(inventory,$("#items"),true)
+		drawInventory(inventory, $("#items"), true)
 	}
 	hideDialogBlockDialog();
 }
 
-function drawInventory(inventory, parent, isList){
+function drawInventory(inventory, parent, isList) {
 	var div = $("<div class='item'>");
 	var img = $("<img src = 'http://placebear.com/150/150'>")
 	var p0 = $("<p class='product-name'>").html(inventory.product.title);
@@ -158,10 +158,10 @@ function drawInventory(inventory, parent, isList){
 	p1.appendTo(div);
 	p2.appendTo(div);
 	var rel = "";
-	if(isList){
+	if (isList) {
 		var p3 = $("<p>").html('Price: $' + inventory.price);
 		p3.appendTo(div);
-		rel = "loadReviewOrder('" + lookup(inventory.links,"rel","self").href +"','" + lookup(inventory.links,"rel","save").href +"'," + inventory.inventoryId + ")";
+		rel = "loadReviewOrder('" + lookup(inventory.links, "rel", "self").href + "','" + lookup(inventory.links, "rel", "save").href + "'," + inventory.inventoryId + ")";
 		var button = $('<button class="ui-button ui-widget ui-corner-all" onclick="' + rel + '">').html("Add to Cart");
 		p3.appendTo(div);
 		button.appendTo(div);
@@ -174,22 +174,23 @@ function drawInventory(inventory, parent, isList){
 }
 
 function lookup(array, prop, value) {
-    for (var i = 0, len = array.length; i < len; i++)
-        if (array[i] && array[i][prop] === value) return array[i];
+	for (var i = 0, len = array.length; i < len; i++)
+		if (array[i] && array[i][prop] === value)
+			return array[i];
 }
 
 $.validate({
-    form : '#place-order-form',
-    onError : function($form) {
-      alert('Validation of form '+$form.attr('id')+' failed!');
-    },
-    onSuccess : function($form) {
-      alert('The form '+$form.attr('id')+' is valid!');
-      return false; // Will stop the submission of the form
-    },
-  });
+	form : '#place-order-form',
+	onError : function($form) {
+		alert('Validation of form ' + $form.attr('id') + ' failed!');
+	},
+	onSuccess : function($form) {
+		alert('The form ' + $form.attr('id') + ' is valid!');
+		return false; // Will stop the submission of the form
+	},
+});
 
-function loadReviewOrder(selfLink, placeOrderLink, inventoryId){
+function loadReviewOrder(selfLink, placeOrderLink, inventoryId) {
 	loadInventoryDetailsToReviewOrder(selfLink);
 	$('#place-order-form').get(0).reset();
 	$(".fields").hide();
@@ -198,68 +199,73 @@ function loadReviewOrder(selfLink, placeOrderLink, inventoryId){
 			modal : true,
 			buttons : {
 				"Place Order" : function() {
-						$("#place-order-form").submit();	
-					},
+					$("#place-order-form").submit();
+				},
 				Cancel : function() {
 					$(this).dialog("close");
 				}
 			},
-			width: "60%",
-			maxWidth: "500px",
-			position: { my: 'top', at: 'top+50' },
+			width : "60%",
+			maxWidth : "500px",
+			position : {
+				my : 'top',
+				at : 'top+50'
+			},
 		});
 		$.validate({
-		    form : '#place-order-form',
-		    onError : function($form) {
-		      alert('Some fields are missing or incorrect. Please fix the errors and try again.');
-		    },
-		    onSuccess : function($form) {
-		      placeOrder(placeOrderLink, inventoryId);
-		      $("#dialogPlaceOrder").dialog("close");
-		      return false;
-		    },
-		  });
-		$( "#place-order-form").on('submit', function(e) {
+			form : '#place-order-form',
+			onError : function($form) {
+				alert('Some fields are missing or incorrect. Please fix the errors and try again.');
+			},
+			onSuccess : function($form) {
+				placeOrder(placeOrderLink, inventoryId);
+				$("#dialogPlaceOrder").dialog("close");
+				return false;
+			},
+		});
+		$("#place-order-form").on('submit', function(e) {
 			e.preventDefault();
 			placeOrder(placeOrderLink, inventoryId);
 			$("#dialogPlaceOrder").dialog("close");
 		})
-	    $( "#credit-card-radio" ).checkboxradio({
-	      icon: false
-	    });
-	    $( "#paypal-radio" ).checkboxradio({
-		      icon: false
+		$("#credit-card-radio").checkboxradio({
+			icon : false
 		});
-	    $('#select-quantity').on('change keyup paste', function() {
-	        var quantity = $(this).val();
-	        var price = document.querySelector('p#price').innerHTML.replace(/\D/g,'');
-	        console.log(price);
-	        document.querySelector('#subtotal').innerHTML = "$" + quantity * price;
-	    });
-	    $('input[name="payment-radio"]').click(function(){
-	        var inputValue = $(this).val();
-	        var targetFields = $("." + inputValue);
-	        $(".fields").not(targetFields).hide();
-	        $(targetFields).show();
-	    });
-	    
+		$("#paypal-radio").checkboxradio({
+			icon : false
+		});
+		$('#select-quantity').on('change keyup paste', function() {
+			var quantity = $(this).val();
+			var price = document.querySelector('p#price').innerHTML.replace(/\D/g, '');
+			console.log(price);
+			document.querySelector('#subtotal').innerHTML = "$" + quantity * price;
+		});
+		$('input[name="payment-radio"]').click(function() {
+			var inputValue = $(this).val();
+			var targetFields = $("." + inputValue);
+			$(".fields").not(targetFields).hide();
+			$(targetFields).show();
+			 loadTestValues();
+		});
+
 	});
 }
 
-function loadInventoryDetailsToReviewOrder(selfLink){
-//	showDialogBlockDialog("Loading Data from Server"); //commented out for now due to jquery ui bug
+function loadInventoryDetailsToReviewOrder(selfLink) {
+	// showDialogBlockDialog("Loading Data from Server"); //commented out for
+	// now due to jquery ui bug
 	$.getJSON(selfLink).done(function(data) {
 		$('#inventoryDetails').empty();
-		drawInventory(data,$('#inventoryDetails'),false);
-//		hideDialogBlockDialog();
+		drawInventory(data, $('#inventoryDetails'), false);
+		// hideDialogBlockDialog();
 	});
 }
 
 function simplifyURL(varUrl) {
 	var pathArray = varUrl.split('/');
-	if(pathArray[pathArray.length - 2].includes(":")){
+	if (pathArray[pathArray.length - 2].includes(":")) {
 		varUrl = pathArray[pathArray.length - 1];
-	}else{
+	} else {
 		varUrl = pathArray[pathArray.length - 2] + '/' + pathArray[pathArray.length - 1];
 	}
 	return varUrl;
@@ -299,48 +305,51 @@ function getBase64Image(img) {
 }
 function loadValuesIntoOrder(inventoryId) {
 	var order = {
-			"customerId": 1,
-			"billingAddressId": 2,
-			"orderDetails": [
-				{
-					
-				}
-				
-			],
-			"paymentMethod": [
-				{
-					
-				}
-			]
-		}
-	order.orderDetails.inventoryId = inventoryId;
-	order.orderDetails.quantity = parseInt($('#select-quantity').val());
-	order.orderDetails.addressId = 1;
-	
+		"customerId" : 1,
+		"billingAddressId" : 2
+	}
+	order.orderDetails = [ {
+		"inventoryId" : inventoryId,
+		"quantity" : parseInt($('#select-quantity').val()),
+		"addressId" : shippingAddressId
+
+	} ];
 	var paymentType = $('input[name="payment-radio"]:checked').val();
 	if (paymentType === "credit-card-radio") {
-		order.paymentMethod.subTotal = parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g,''));
-		order.paymentMethod.creditCardNumber = $("#credit-card-number").val();
-		order.paymentMethod.nameOnCard = $("#name-on-card").val();
-		order.paymentMethod.securityCode = $("#security-code").val();
-		order.paymentMethod.validDate = $("#expiration-date").val();
+		order.paymentMethod = [ {
+			"subTotal" : parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g, '')),
+			"creditCardNumber" : $("#credit-card-number").val(),
+			"nameOnCard" : $("#name-on-card").val(),
+			"securityCode" : $("#security-code").val(),
+			"validDate" : $("#expiration-date").val()
+		} ]
 	} else if (paymentType === "paypal-radio") {
-		order.paymentMethod.subTotal = parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g,''));
-		order.paymentMethod.transactionId = $("#transaction-id").val();
-		order.paymentMethod.accountEmail = $("#account-email").val();
+		order.paymentMethod = [ {
+			"subTotal" : parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g, '')),
+			"transactionId" : $("#transaction-id").val(),
+			"accountEmail" : $("#account-email").val()
+		} ]
 	}
 	return order;
 }
-function placeOrder(submitURL, inventoryId){
+function placeOrder(submitURL, inventoryId) {
 	var order = loadValuesIntoOrder(inventoryId);
 	console.log(order);
-	//submit
+	$.post("order", JSON.stringify(order), "json").done(function(data) {
+		hideDialogBlockDialog();
+		showDialog("Contact Saved", function() {
+			refreshContactsList();
+		});
+
+	});
+
+	// submit
 }
 function saveContact(varUrl) {
 	showDialogBlockDialog("Saving");
 	if (varUrl == 0) {
 
-		$.post("contact", JSON.stringify(loadFormIntoContact()), "json").done(function(data) {
+		$.post("inventory", JSON.stringify(loadFormIntoContact()), "json").done(function(data) {
 			hideDialogBlockDialog();
 			showDialog("Contact Saved", function() {
 				refreshContactsList();
@@ -368,13 +377,12 @@ function saveContact(varUrl) {
 	}
 }
 function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+	var d = new Date(date), month = '' + (d.getMonth() + 1), day = '' + d.getDate(), year = d.getFullYear();
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+	if (month.length < 2)
+		month = '0' + month;
+	if (day.length < 2)
+		day = '0' + day;
 
-    return [year, month, day].join('-');
+	return [ year, month, day ].join('-');
 }
