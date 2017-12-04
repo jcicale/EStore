@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.hateoas.ResourceSupport;
 
 import com.estore.customer.model.Address;
 import com.estore.customer.model.Customer;
@@ -27,7 +28,7 @@ import com.estore.customer.model.Customer;
 		@NamedQuery(query = "FROM Order o WHERE o.customer.customerId = :customerId", name = "Order.list_Orders_by_customerId"),
 		@NamedQuery(query = "FROM Order o WHERE o.customer.customerId = :customerId AND o.orderState = :orderState", name = "Order.list_Orders_by_customerId_and_orderState") })
 
-public class Order {
+public class Order extends ResourceSupport {
 	@Id
 	@GeneratedValue
 	private Long orderId;

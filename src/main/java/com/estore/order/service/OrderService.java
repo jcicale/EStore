@@ -1,5 +1,8 @@
 package com.estore.order.service;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.estore.EStoreConstants;
 import com.estore.EStoreUtils;
+import com.estore.SuperLink;
 import com.estore.customer.service.AddressService;
 import com.estore.customer.service.CustomerService;
 import com.estore.inventory.service.InventoryService;
@@ -25,6 +29,7 @@ import com.estore.order.model.ShippingOrder;
 import com.estore.order.representation.OrderDetailRequest;
 import com.estore.order.representation.OrderRequest;
 import com.estore.order.representation.PaymentMethodRequest;
+import com.estore.order.resource.OrderResource;
 
 @Service
 public class OrderService {
@@ -42,6 +47,23 @@ public class OrderService {
 
 	public Iterable<Order> listAllOrders() {
 		Iterable<Order> list = orderDao.findAll();
+		for (Order order : list) {
+			if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_PENDING)) {
+				order.add(new SuperLink(
+						linkTo(methodOn(OrderResource.class).acceptPayment(order.getOrderId())).withRel("accept"),
+						"PUT"));
+				order.add(new SuperLink(
+						linkTo(methodOn(OrderResource.class).cancelOrder(order.getOrderId())).withRel("cancel"),
+						"PUT"));
+			} else {
+				if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP)) {
+					order.add(new SuperLink(
+							linkTo(methodOn(OrderResource.class).fulfillOrder(order.getOrderId())).withRel("fulfill"),
+							"PUT"));
+				}
+			}
+
+		}
 		return list;
 	}
 
@@ -75,7 +97,7 @@ public class OrderService {
 		return order;
 	}
 
-	public boolean acceptPayment(Order order) {
+	public Order acceptPayment(Order order) {
 		if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_PENDING)) {
 			if (order.getPaymentMethod() != null && order.getPaymentMethod().size() > 0) {
 				for (PaymentMethod paymentMethod : order.getPaymentMethod()) {
@@ -85,12 +107,14 @@ public class OrderService {
 			order.setPaymentStatus(EStoreConstants.PAYMENT_STATUS_VERIFIED);
 			order.setOrderState(EStoreConstants.ORDER_STATUS_READY_TO_SHIP);
 			order = orderDao.save(order);
-			return order != null;
+			order.add(new SuperLink(
+					linkTo(methodOn(OrderResource.class).fulfillOrder(order.getOrderId())).withRel("fulfill"), "PUT"));
+			return order;
 		}
-		return false;
+		return null;
 	}
 
-	public boolean fulfillOrder(Order order) {
+	public Order fulfillOrder(Order order) {
 		if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP)) {
 			if (order.getOrderDetails() != null && order.getOrderDetails().size() > 0) {
 				for (OrderDetail orderDetail : order.getOrderDetails()) {
@@ -118,12 +142,12 @@ public class OrderService {
 				}
 			}
 			order = orderDao.save(order);
-			return order != null;
+			return order;
 		}
-		return false;
+		return null;
 	}
 
-	public boolean cancelOrderDetail(Order order, Long orderDetailId) {
+	public Order cancelOrderDetail(Order order, Long orderDetailId) {
 		OrderDetail orderDetail = null;
 		if (order.getOrderDetails() != null && order.getOrderDetails().size() > 0) {
 			for (OrderDetail aux : order.getOrderDetails()) {
@@ -165,11 +189,12 @@ public class OrderService {
 				}
 			}
 			order = orderDao.save(order);
+			return order;
 		}
-		return order != null;
+		return null;
 	}
 
-	public boolean cancelOrder(Order order) {
+	public Order cancelOrder(Order order) {
 		if (order != null && order.getOrderState().equals(EStoreConstants.ORDER_STATUS_PENDING)) {
 			order.setOrderState(EStoreConstants.ORDER_STATUS_CANCELED);
 			if (order.getPaymentMethod() != null && order.getPaymentMethod().size() > 0) {
@@ -181,9 +206,9 @@ public class OrderService {
 				}
 			}
 			order = orderDao.save(order);
-			return order != null;
+			return order;
 		}
-		return false;
+		return null;
 	}
 
 	public Order toOrder(OrderRequest orderRequest) {
