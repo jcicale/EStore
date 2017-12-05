@@ -11,12 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import com.estore.inventory.model.Inventory;
 
 @Entity
 @Table(name = "tblOrderDetail")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class OrderDetail {
+public class OrderDetail extends ResourceSupport {
 	@Id
 	@GeneratedValue
 	private Long orderDetailId;

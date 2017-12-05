@@ -67,8 +67,32 @@ public class OrderService {
 		return list;
 	}
 
-	public List<Order> listAllByPartnerId(Long partnerId) {
-		return orderDao.list_Orders_by_partnerId(partnerId);
+	public Iterable<Order> listAllByPartnerId(Long partnerId) {
+		Iterable<Order> list = orderDao.list_Orders_by_partnerId(partnerId);
+		for (Order order : list) {
+			if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_COMPLETED)) {
+				for (OrderDetail orderDetail : order.getOrderDetails()) {
+					if (orderDetail.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP)) {
+						order.add(
+								new SuperLink(
+										linkTo(methodOn(OrderResource.class).shipOrderDetail(order.getOrderId(),
+												orderDetail.getOrderDetailId(), "trackingNumber")).withRel("ship"),
+										"PUT"));
+						order.add(
+								new SuperLink(linkTo(methodOn(OrderResource.class).cancelOrderDetail(order.getOrderId(),
+										orderDetail.getOrderDetailId())).withRel("cancel"), "PUT"));
+					} else {
+						if (orderDetail.getOrderState().equals(EStoreConstants.ORDER_STATUS_SHIPPED)) {
+							order.add(new SuperLink(
+									linkTo(methodOn(OrderResource.class).orderDetailDelivered(order.getOrderId(),
+											orderDetail.getOrderDetailId())).withRel("delivered"),
+									"PUT"));
+						}
+					}
+				}
+			}
+		}
+		return list;
 	}
 
 	public Order getOrderById(Long orderId) {
@@ -192,6 +216,53 @@ public class OrderService {
 
 				}
 			}
+			order = orderDao.save(order);
+			return order;
+		}
+		return null;
+	}
+
+	public Order shipOrderDetail(Order order, Long orderDetailId, String trackingNumber) {
+		ShippingOrder orderDetail = null;
+		if (order.getOrderDetails() != null && order.getOrderDetails().size() > 0) {
+			for (OrderDetail aux : order.getOrderDetails()) {
+				if (orderDetail == null) {
+					if (aux.getOrderDetailId().equals(orderDetailId)) {
+						orderDetail = (ShippingOrder) aux;
+					}
+				}
+			}
+		}
+		if (orderDetail != null && (orderDetail.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP))) {
+			orderDetail.setOrderState(EStoreConstants.ORDER_STATUS_SHIPPED);
+			orderDetail.setTrackingNumber(trackingNumber);
+			Calendar deliveryDate = Calendar.getInstance();
+			deliveryDate.add(Calendar.DATE, 3);
+			orderDetail.setEstimatedDelivery(deliveryDate);
+			order = orderDao.save(order);
+			order.add(new SuperLink(
+					linkTo(methodOn(OrderResource.class).orderDetailDelivered(order.getOrderId(),
+							orderDetail.getOrderDetailId())).withRel("delivered"),
+					"PUT"));
+			return order;
+		}
+		return null;
+	}
+
+	public Order orderDetailDelivered(Order order, Long orderDetailId) {
+		ShippingOrder orderDetail = null;
+		if (order.getOrderDetails() != null && order.getOrderDetails().size() > 0) {
+			for (OrderDetail aux : order.getOrderDetails()) {
+				if (orderDetail == null) {
+					if (aux.getOrderDetailId().equals(orderDetailId)) {
+						orderDetail = (ShippingOrder) aux;
+					}
+				}
+			}
+		}
+		if (orderDetail.getOrderState().equals(EStoreConstants.ORDER_STATUS_SHIPPED)) {
+			orderDetail.setOrderState(EStoreConstants.ORDER_STATUS_DELIVERED);
+			orderDetail.setDelivered(Calendar.getInstance());
 			order = orderDao.save(order);
 			return order;
 		}

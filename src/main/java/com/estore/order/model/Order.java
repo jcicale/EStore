@@ -27,7 +27,7 @@ import com.estore.customer.model.Customer;
 @NamedQueries({
 		@NamedQuery(query = "FROM Order o WHERE o.customer.customerId = :customerId", name = "Order.list_Orders_by_customerId"),
 		@NamedQuery(query = "FROM Order o WHERE o.customer.customerId = :customerId AND o.orderState = :orderState", name = "Order.list_Orders_by_customerId_and_orderState"),
-		@NamedQuery(query = "FROM Order o JOIN o.orderDetails od WHERE od.inventory.partner.partnerId = :partnerId", name = "Order.list_Orders_by_partnerId")})
+		@NamedQuery(query = "SELECT o FROM Order o JOIN o.orderDetails od WHERE od.inventory.partner.partnerId = :partnerId", name = "Order.list_Orders_by_partnerId")})
 
 public class Order extends ResourceSupport {
 	@Id

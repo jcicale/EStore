@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.estore.order.model.Order;
-import com.estore.order.model.ShippingOrder;
 import com.estore.order.representation.OrderRequest;
-import com.estore.order.service.OrderDetailService;
 import com.estore.order.service.OrderService;
 
 @RestController
@@ -21,9 +19,6 @@ import com.estore.order.service.OrderService;
 public class OrderResource {
 	@Autowired
 	private OrderService orderService;
-
-	@Autowired
-	private OrderDetailService orderDetailService;
 
 	@GetMapping
 	public Iterable<Order> listAllOrders() {
@@ -76,13 +71,23 @@ public class OrderResource {
 	}
 
 	@RequestMapping(value = "{orderId}/orderDetail/{orderDetailId}/ship/{trackingNumber}", method = RequestMethod.PUT)
-	public ResponseEntity<String> shipOrder(@PathVariable("orderId") Long orderId,
+	public ResponseEntity<Order> shipOrderDetail(@PathVariable("orderId") Long orderId,
 			@PathVariable("orderDetailId") Long orderDetailId, @PathVariable("trackingNumber") String trackingNumber) {
-		if (orderDetailService.shipOrderDetail((ShippingOrder) orderDetailService.getById(orderDetailId),
-				trackingNumber)) {
-			return new ResponseEntity<String>(HttpStatus.OK);
+		Order order = orderService.shipOrderDetail(orderService.getOrderById(orderId), orderDetailId, trackingNumber);
+		if (order != null) {
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
+	}
+
+	@RequestMapping(value = "{orderId}/orderDetail/{orderDetailId}/delivered", method = RequestMethod.PUT)
+	public ResponseEntity<Order> orderDetailDelivered(@PathVariable("orderId") Long orderId,
+			@PathVariable("orderDetailId") Long orderDetailId) {
+		Order order = orderService.orderDetailDelivered(orderService.getOrderById(orderId), orderDetailId);
+		if (order != null) {
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
+		}
+		return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "{orderId}/cancel", method = RequestMethod.PUT)
