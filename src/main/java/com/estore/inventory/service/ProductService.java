@@ -28,9 +28,9 @@ public class ProductService {
 		return product;
 	}
 
-	public boolean updateProduct(Product product) {
+	public Product updateProduct(Product product) {
 		product = productDao.save(product);
-		return product != null;
+		return product;
 	}
 
 	public boolean deleteProduct(Long productId) {
