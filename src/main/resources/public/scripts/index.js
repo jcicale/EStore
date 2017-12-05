@@ -17,7 +17,6 @@ $(function() {
 			var url = "inventory/product?title=" + searchTerm;
 			showDialogBlockDialog("Loading Data from Server");
 			$.getJSON(url).done(function(data) {
-				console.log(data);
 				drawSearchResults(data);
 			});
 		}
@@ -190,6 +189,12 @@ function loadReviewOrder(selfLink, placeOrderLink, inventoryId) {
 		$("#paypal-radio").checkboxradio({
 			icon : false
 		});
+		$("#shipping-radio").checkboxradio({
+			icon: false
+		});
+		$("#pickup-radio").checkboxradio({
+			icon: false
+		});
 		$('#select-quantity').on('change keyup paste', function() {
 			var quantity = $(this).val();
 			var price = document.querySelector('p#price').innerHTML.replace(/\D/g, '');
@@ -221,16 +226,24 @@ function loadValuesIntoOrder(inventoryId) {
 		"customerId" : 1,
 		"billingAddressId" : 2
 	}
-	order.orderDetails = [ {
-		"inventoryId" : inventoryId,
-		"quantity" : parseInt($('#select-quantity').val()),
-		"addressId" : shippingAddressId
+	var shipmentType = $('input[name="order-type-radio"]:checked').val();
+	if (shipmentType === "shipping-radio") {
+		order.orderDetails = [ {
+			"inventoryId" : inventoryId,
+			"quantity" : $('#select-quantity').val(),
+			"addressId" : shippingAddressId
 
-	} ];
+		} ];
+	} else if (shipmentType === "pickup-radio") {
+		order.orderDetails = [ {
+				"inventoryId": inventoryId,
+				"quantity": $('#select-quantity').val(),			
+		} ];
+	}
 	var paymentType = $('input[name="payment-radio"]:checked').val();
 	if (paymentType === "credit-card-radio") {
 		order.paymentMethod = [ {
-			"subTotal" : parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g, '')),
+			"subTotal" : document.querySelector("#subtotal").innerHTML.replace(/\D/g, ''),
 			"creditCardNumber" : $("#credit-card-number").val(),
 			"nameOnCard" : $("#name-on-card").val(),
 			"securityCode" : $("#security-code").val(),
@@ -238,7 +251,7 @@ function loadValuesIntoOrder(inventoryId) {
 		} ]
 	} else if (paymentType === "paypal-radio") {
 		order.paymentMethod = [ {
-			"subTotal" : parseInt(document.querySelector("#subtotal").innerHTML.replace(/\D/g, '')),
+			"subTotal" : document.querySelector("#subtotal").innerHTML.replace(/\D/g, ''),
 			"transactionId" : $("#transaction-id").val(),
 			"accountEmail" : $("#account-email").val()
 		} ]

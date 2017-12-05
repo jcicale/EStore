@@ -169,8 +169,8 @@ form .fields{
 	display: none;
 }
 
-div.paypal-radio, div.credit-card-radio {
-	margin-top: 1em;
+div.radio-buttons {
+	margin: 1em;
 }
 
 div.credit-card-info, div.paypal-info {

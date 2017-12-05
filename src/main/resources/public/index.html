@@ -58,7 +58,7 @@
 							data-validation-error-msg="You must select a quantity greater than 0" 
 							type="text" id=select-quantity name="quantity" placeholder="0">
 					</div>
-					<div>
+					<div class="radio-buttons">
 						<label style="margin: 1em; vertical-align: middle;">Select a payment method: </label>
 					    <label for="credit-card-radio">Credit Card</label>
 					    <input 
@@ -118,9 +118,21 @@
 							data-validation="number"
 							data-validation-error-msg="Enter a valid security code" 
 							type="text" id="security-code" name="security-code" placeholder="555">
-						</div>
-						
+						</div>					
 				    </div>
+				    <div class="radio-buttons">
+						<label style="margin: 1em; vertical-align: middle;">Select an order type: </label>
+					    <label for="shipping-radio">Shipping Order</label>
+					    <input 
+					    		data-validation="required"  
+					    		data-validation-error-msg="You must select an order type" 
+					    		type="radio" name="order-type-radio" value="shipping-radio" id="shipping-radio">
+					    <label for="pickup-radio">Pickup Order</label>
+					    <input 
+							data-validation="required"  
+					    		data-validation-error-msg="You must select an order type" 
+							type="radio" name="order-type-radio" value="pickup-radio" id="pickup-radio">
+					</div>
 				    <p>Subtotal:</p>
 					<p id="subtotal"></p>
 				</fieldset>
