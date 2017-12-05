@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>E-Store Sign In</title>
+<link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+<script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
+<link type="text/css" rel="stylesheet" href="/styles/main.css" />
+<link href="https://fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet">
+<script src="scripts/estore_utils.js"></script>
+<script src="scripts/login.js"></script>
+</head>
+<body>
+	<header>
+		<ul>
+			<li>
+				<a href="index.html">E-Store</a>
+			</li>
+		</ul>
+	</header>
+	<main>
+	<div id="login-container">
+		<form>
+			<label class="login-label" for="user-name">User Name</label>
+			<input class="login-input" type="text" id=user-name name="user-name" placeholder="User Name" style="margin-right: 20px;">
+			<label class="login-label" for="password">Password</label>
+			<input class="login-input password" type="password" id=password name="password" placeholder="Password">
+			<input type="submit" class="submit-input" id="submit-login">
+		</form>
+		<p id="sign-up-text" class="switch-text">Don't have an account? Click here to sign up.</p>
+	</div>
+	<div id="sign-up-container">
+		<form>
+			<label class="login-label" for="account-type">Select an account type</label>
+		    <select name="account-type" id="account-type">
+	        		<option value="customer" data-class="ui-icon-person">Customer</option>
+	         	<option value="partner" data-class="ui-icon-suitcase">Partner</option>
+		    </select>
+		    <hr>
+			<label class="login-label" for="user-name">User Name</label>
+			<input class="login-input" type="text" id=create-user-name name="user-name" placeholder="User Name" style="margin-right: 20px;">
+			<label class="login-label" for="password">Password</label>
+			<input class="login-input password" type="password" id=create-password name="password" placeholder="Password">
+			<input type="submit" class="submit-input" id="submit-sign-up">
+		</form>
+		<p id="login-text" class="switch-text">Already have an account? Click here to login.</p>
+	</div>
+	<div id="dialog-message" title="Message From Server" style="display: none">
+		<p id="dialogMessageText"></p>
+	</div>
+	<div id="dialog-loading" title="Message From Server" style="display: none">
+		<p id="dialogMessageTextLoading"></p>
+	</div>
+	</main>
+	<footer>Copyright 2017</footer>
+</body>
+</html>

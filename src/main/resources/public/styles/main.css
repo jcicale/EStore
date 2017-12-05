@@ -280,6 +280,76 @@ button.link.green {
 	background-color: #009c1a;
 }
 
+/* Login Page styles */
+div#sign-up-container {
+	display: none;
+}
+
+div#sign-up-container, div#login-container {
+	width: 70%;
+    margin: 5% auto;
+    border-radius: 2em;
+    border: 2px solid #1a7f7f;
+    background-color: #e0ddd5;
+    padding: 5%;
+    color: #1a7f7f;
+}
+
+p.switch-text {
+	font-weight: 700;
+	cursor: pointer;
+}
+
+input.login-input {
+    width: 73%;
+    margin: 1em;
+}
+
+input.login-input.password {
+	padding-left: 1em; 
+	height:3em; 
+	width: 70%;
+}
+
+label.login-label {
+	text-align: left;
+	display: inline;
+	vertical-align: middle;
+}
+
+#account-type-button {
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    width: 90%;
+    height: 1.5em;
+    outline: none;
+    padding-top: .8em;
+    display: block;
+    margin: 1em auto;
+    font-family: 'Lato', sans-serif;
+    background-color: #ffffff;
+}
+
+li.ui-menu-item {
+	width: 100%;
+    text-align: left;
+    font-family: 'Lato', sans-serif;
+}
+
+input.submit-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 85%;
+    height: 4em;
+    display: block;
+    margin: 1.5em auto;
+    background-color: #1a7f7f;
+    color: #ffffff;
+    border-radius: 2em;
+    outline: none;
+}
+
+
 .ui-dialog-titlebar-close {
 	visibility: hidden;
 }
