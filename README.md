@@ -37,12 +37,10 @@ application.
 ![EStore_ERD](https://i.imgur.com/7TRWs6v.png)
 
 ## Database Connection Details  
-Host: 18.220.231.8:3306
-Database: estore
-User: estore
-Password: estore
-
-
+Host: 18.220.231.8:3306  
+Database: estore  
+User: estore  
+Password: estore  
 
 ## Description
 Use the case study material as a requirement. Your approach is to provide web service APIs for all functionalities that will provide access to your items that you will sell and to provide your partners to be able to add their inventories to be sold on your site using APIs. We will concentrate developing services for the following:  
