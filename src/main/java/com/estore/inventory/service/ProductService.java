@@ -1,10 +1,15 @@
 package com.estore.inventory.service;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.estore.SuperLink;
 import com.estore.inventory.dao.ProductDao;
 import com.estore.inventory.model.Product;
+import com.estore.inventory.resource.ProductResource;
 
 @Service
 public class ProductService {
@@ -14,6 +19,9 @@ public class ProductService {
 
 	public Iterable<Product> listAllProduct() {
 		Iterable<Product> listProduct = productDao.findAll();
+		for (Product product : listProduct) {
+			product.add(new SuperLink(linkTo(methodOn(ProductResource.class).deleteProduct(product.getProductId())).withRel("delete"), "DELETE"));
+		}
 		return listProduct;
 	}
 

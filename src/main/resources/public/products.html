@@ -21,12 +21,10 @@
 	</header>
 	<main>
 	<section id="menu">
-		<table id="orders">
-		</table>
+		<button onclick="loadReviewCRUD('product')">Add Product</button>
 	</section>
 	<section id="list">
-		<div id="orders">
-		</div>
+		<div id="orders"></div>
 	</section>
 	<div id="dialog-message" title="Message From Server" style="display: none">
 		<p id="dialogMessageText"></p>
@@ -34,6 +32,26 @@
 	<div id="dialog-loading" title="Message From Server" style="display: none">
 		<p id="dialogMessageTextLoading"></p>
 	</div>
+	<div id="dialogCRUD" title="Create Product" style="display: none">
+		<div id="mainForm">
+			<div id="inventoryDetails"></div>
+			<input type="hidden" id="productId" name="productId">
+			<form id="place-order-form">
+				<fieldset>
+					<legend>Product Information </legend>
+					<div class="title">
+						<label for="quantity">Title</label>
+						<input type="text" id="title" name="title" placeholder="Running Shoes">
+					</div>
+					<div class="quantity-info">
+						<label for="description">Description</label>
+						<textarea id="description" name="description" placeholder="These pair of shoes seliver a comfortable ..."></textarea>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
 	</main>
 	<footer>Copyright 2017</footer>
 </body>

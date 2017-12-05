@@ -45,7 +45,7 @@ public class ProductResource {
 		return product;
 	}
 
-	@RequestMapping(value = "{orderId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "{productId}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteProduct(@RequestBody Long productId) {
 		if (productService.deleteProduct(productId)) {
 			return new ResponseEntity<String>(HttpStatus.OK);
