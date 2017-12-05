@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.estore.inventory.model.Inventory;
@@ -26,8 +27,8 @@ public class InventoryResource {
 		return inventoryService.listInventory();
 	}
 
-	@GetMapping("product/{title}")
-	public Iterable<Inventory> listInventoryByKeywords(@PathVariable("title") String title) {
+	@RequestMapping(value="product", method = RequestMethod.GET)
+	public Iterable<Inventory> listInventoryByKeywords(@RequestParam("title") String title) {
 		return inventoryService.list_Inventory_by_keywords(title);
 	}
 

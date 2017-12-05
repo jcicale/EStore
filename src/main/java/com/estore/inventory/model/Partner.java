@@ -7,6 +7,8 @@ import javax.persistence.Table;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tblPartner")
 public class Partner extends ResourceSupport {
@@ -35,6 +37,7 @@ public class Partner extends ResourceSupport {
 		this.userName = userName;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
