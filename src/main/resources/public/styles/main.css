@@ -7,33 +7,38 @@ html {
 
 body {
 	height: 100%;
-	width: 100%;
-	text-align: center;
+	width: 70%;
+	text-align: center;/* 
 	padding-left: 15%;
-	padding-right: 15%;
+	padding-right: 15%; */
 	font-family: 'Lato', sans-serif;
+	margin: auto;
+}
+
+input {
+	outline: none;
 }
 
 #profileImage {
 	max-width: 300px;
 }
 
-main {
+/* main {
 	min-height: 50%;
 	max-width: 60%;
 }
-
+ */
 header {
 	background-color: #333399;
 	font-size: 18px;
 	color: white;
-	max-width: 60%;
+/* 	max-width: 60%; */
 }
 
 footer {
 	background-color: #008080;
 	color: white;
-	max-width: 60%;
+/* 	max-width: 60%; */
 }
 
 ul {
@@ -111,6 +116,24 @@ input[type=button]:hover {
 	margin-top: 20px;
 }
 
+li a.links {
+	font-size: .8em;
+    padding: 17px;
+}
+
+li.logout-button, li.add-product-button {
+	float: right;
+}
+
+button#add-product {
+	margin-right: 1.5em;
+    margin-top: 1em;
+    height: 2.5em;
+    border-radius: 2em;
+    padding: 0 2em 0 1em;
+    cursor: pointer;
+}
+
 #product-search {
 	padding: 1em;
     margin: .7em 0;
@@ -129,6 +152,9 @@ input[type=button]:hover {
 	flex-wrap: wrap;
 	margin-left: -.5em;
 	margin-top: -.5em;
+	width: 90%;
+    margin: auto;
+    padding-bottom: 1em;
 }
 
 #items .item {
@@ -161,8 +187,13 @@ input[type=button]:hover {
     border-radius: 1em;
 }
 
-#dialogPlaceOrder {
+#dialogPlaceOrder, #dialogCRUD {
 	font-family: "Lato", sans-serif;
+}
+
+span.ui-dialog-title {
+	float: none !important;
+	font-weight: 300 !important;
 }
 
 form .fields{
@@ -178,7 +209,8 @@ div.credit-card-info, div.paypal-info {
 	margin: 0 2%;
 }
 
-div.credit-card-info label, div.name-on-card label, div.quantity-info label, div.paypal-info label {
+div.credit-card-info label, div.name-on-card label, div.quantity-info label, div.paypal-info label,
+div.title label, div.description label{
 	float: left;
 	text-align: left;
     font-size: .8em;
@@ -208,6 +240,8 @@ button:focus {
 /*  representatives styles  */
 table {
 	white-space: pre-wrap;
+	margin: 1em auto;
+	width: 80%;
 }
 
 .order {
@@ -245,7 +279,10 @@ td.order-item.teal{
 	color: #1a7f7f;
 	font-weight: 700;
 }
-
+td.order-item.orange {
+	color: #ff5722;
+	font-weight: 700;
+}
 td.order-item.blue {
 	color: #0484c1;
 	font-weight: 700;

@@ -130,8 +130,8 @@ function loadReviewCRUD(saveLink) {
 					$(this).dialog("close");
 				}
 			},
-			width : "60%",
-			maxWidth : "500px",
+			width : "40%",
+			maxWidth : "300px",
 			position : {
 				my : 'top',
 				at : 'top+50'

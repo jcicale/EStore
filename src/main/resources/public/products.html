@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Partner Module</title>
+<title>Representative Module</title>
 <link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
 <script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
@@ -15,16 +15,22 @@
 	<header>
 		<ul>
 			<li>
-				<a href="partners.html">E-Store</a>
+				<a href="representatives.html">E-Store</a>
+			</li>
+			<li>
+				<a href="products.html" class="links">Product List</a>
+			</li>
+			<li class="add-product-button">
+				<button id="add-product" onclick="loadReviewCRUD('product')"><span class="ui-icon ui-icon-plusthick" style="margin-right: .5em"></span>Add Product</button>
 			</li>
 		</ul>
 	</header>
 	<main>
 	<section id="menu">
-		<button onclick="loadReviewCRUD('product')">Add Product</button>
+		
 	</section>
 	<section id="list">
-		<div id="orders"></div>
+		<table id="orders"></table>
 	</section>
 	<div id="dialog-message" title="Message From Server" style="display: none">
 		<p id="dialogMessageText"></p>
@@ -43,9 +49,9 @@
 						<label for="quantity">Title</label>
 						<input type="text" id="title" name="title" placeholder="Running Shoes">
 					</div>
-					<div class="quantity-info">
+					<div class="description">
 						<label for="description">Description</label>
-						<textarea id="description" name="description" placeholder="These pair of shoes seliver a comfortable ..."></textarea>
+						<textarea id="description" name="description" placeholder="These pair of shoes deliver a comfortable ..."></textarea>
 					</div>
 				</fieldset>
 			</form>
