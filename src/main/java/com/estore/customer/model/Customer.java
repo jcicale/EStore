@@ -6,6 +6,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tblCustomer")
+@NamedQueries({
+		@NamedQuery(query = "FROM Customer c WHERE c.userName = :userName", name = "Customer.list_Customer_by_userName") })
 public class Customer extends ResourceSupport {
 	@Id
 	@GeneratedValue

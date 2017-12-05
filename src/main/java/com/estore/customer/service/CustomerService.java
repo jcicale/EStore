@@ -1,10 +1,13 @@
 package com.estore.customer.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.estore.customer.dao.CustomerDao;
 import com.estore.customer.model.Customer;
+import com.estore.customer.representation.LoginRepresentation;
 
 @Service
 public class CustomerService {
@@ -15,6 +18,16 @@ public class CustomerService {
 	public Iterable<Customer> listAllCustomers() {
 		Iterable<Customer> listCustomer = customerDao.findAll();
 		return listCustomer;
+	}
+
+	public LoginRepresentation userLogin(LoginRepresentation loginRepresentation) {
+		List<Customer> customer = customerDao.list_Customer_by_userName(loginRepresentation.getUserName());
+		if (customer != null && customer.size() > 0) {
+			loginRepresentation.setRol("customer");
+			loginRepresentation.setUserId(customer.get(0).getCustomerId());
+			loginRepresentation.setName(customer.get(0).getFirstName() + " " + customer.get(0).getLastName());
+		}
+		return loginRepresentation;
 	}
 
 	public Customer getCustomerById(Long customerId) {
@@ -28,9 +41,9 @@ public class CustomerService {
 		return customer;
 	}
 
-	public boolean updateCustomer(Customer customer) {
+	public Customer updateCustomer(Customer customer) {
 		customer = customerDao.save(customer);
-		return customer != null;
+		return customer;
 	}
 
 	public boolean deleteCustomer(Long customerId) {
