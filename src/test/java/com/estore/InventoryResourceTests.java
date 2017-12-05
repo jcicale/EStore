@@ -32,7 +32,13 @@ public class InventoryResourceTests {
 
 	@Test
 	public void listInventory() throws Exception {
-		mvc.perform(get("/inventory/product/FitBit")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.notNullValue()))
+		mvc.perform(get("/inventory/product?title=FitBit")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.notNullValue()))
+		.andExpect(jsonPath("$", Matchers.hasSize(10)));
+	}
+	
+	@Test
+	public void listInventoryByPartnerId() throws Exception {
+		mvc.perform(get("/inventory/partnerId/1")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.notNullValue()))
 		.andExpect(jsonPath("$", Matchers.hasSize(10)));
 	}
 

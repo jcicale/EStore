@@ -27,9 +27,15 @@ public class InventoryResource {
 		return inventoryService.listInventory();
 	}
 
-	@RequestMapping(value="product", method = RequestMethod.GET)
+	@RequestMapping(value = "product", method = RequestMethod.GET)
 	public Iterable<Inventory> listInventoryByKeywords(@RequestParam("title") String title) {
 		return inventoryService.list_Inventory_by_keywords(title);
+	}
+
+	@GetMapping("partnerId/{partnerId}")
+	public Iterable<Inventory> listAllByPartnerId(@PathVariable("partnerId") Long partnerId) {
+		System.out.println("testing");
+		return inventoryService.list_Inventory_by_partnerId(partnerId);
 	}
 
 	@GetMapping("{inventoryId}")

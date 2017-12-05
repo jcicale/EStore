@@ -34,6 +34,14 @@ public class InventoryService {
 		}
 		return listInventory;
 	}
+	
+	public Iterable<Inventory> list_Inventory_by_partnerId(Long partnerId) {
+		Iterable<Inventory> listInventory = inventoryDao.list_Inventory_by_partnerId(partnerId);
+		for (Inventory inventory : listInventory) {
+			//inventory.add(new SuperLink(linkTo(InventoryResource.class).withRel("save"),"POST"));
+		}
+		return listInventory;
+	}
 
 	public Inventory getInventoryById(Long inventoryId) {
 		Inventory inventory = inventoryDao.findOne(inventoryId);

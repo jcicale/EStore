@@ -11,4 +11,6 @@ public interface InventoryDao extends CrudRepository<Inventory, Long> {
 
 	List<Inventory> list_Inventory_by_keywords(@Param("keywords") String keywords);
 
+	List<Inventory> list_Inventory_by_partnerId(@Param("partnerId") Long partnerId);
+
 }

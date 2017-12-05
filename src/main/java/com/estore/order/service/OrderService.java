@@ -67,6 +67,19 @@ public class OrderService {
 		return list;
 	}
 
+	public Iterable<Order> listAllByCustomerId(Long customerId) {
+		Iterable<Order> list = orderDao.list_Orders_by_customerId(customerId);
+		for (Order order : list) {
+			if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_PENDING)) {
+				order.add(new SuperLink(
+						linkTo(methodOn(OrderResource.class).cancelOrder(order.getOrderId())).withRel("cancel"),
+						"PUT"));
+			}
+
+		}
+		return list;
+	}
+
 	public Iterable<Order> listAllByPartnerId(Long partnerId) {
 		Iterable<Order> list = orderDao.list_Orders_by_partnerId(partnerId);
 		for (Order order : list) {
@@ -240,10 +253,8 @@ public class OrderService {
 			deliveryDate.add(Calendar.DATE, 3);
 			orderDetail.setEstimatedDelivery(deliveryDate);
 			order = orderDao.save(order);
-			order.add(new SuperLink(
-					linkTo(methodOn(OrderResource.class).orderDetailDelivered(order.getOrderId(),
-							orderDetail.getOrderDetailId())).withRel("delivered"),
-					"PUT"));
+			order.add(new SuperLink(linkTo(methodOn(OrderResource.class).orderDetailDelivered(order.getOrderId(),
+					orderDetail.getOrderDetailId())).withRel("delivered"), "PUT"));
 			return order;
 		}
 		return null;
@@ -273,6 +284,9 @@ public class OrderService {
 		if (order != null && order.getOrderState().equals(EStoreConstants.ORDER_STATUS_PENDING)) {
 			order.setOrderState(EStoreConstants.ORDER_STATUS_CANCELED);
 			if (order.getPaymentMethod() != null && order.getPaymentMethod().size() > 0) {
+				for (OrderDetail aux : order.getOrderDetails()) {
+					aux.setOrderState(EStoreConstants.ORDER_STATUS_CANCELED);
+				}
 				for (PaymentMethod paymentMethod : order.getPaymentMethod()) {
 					Refund refund = new Refund(null, EStoreConstants.PAYMENT_STATUS_PENDING,
 							paymentMethod.getSubTotal(), order.getOrderDetails().get(0), paymentMethod);

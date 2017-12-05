@@ -29,6 +29,11 @@ public class OrderResource {
 	public Iterable<Order> listAllByPartnerId(@PathVariable("partnerId") Long partnerId) {
 		return orderService.listAllByPartnerId(partnerId);
 	}
+	
+	@GetMapping("customerId/{customerId}")
+	public Iterable<Order> listAllByCustomerId(@PathVariable("customerId") Long customerId) {
+		return orderService.listAllByCustomerId(customerId);
+	}
 
 	@GetMapping("{orderId}")
 	public Order getOrderById(@PathVariable("orderId") Long orderId) {

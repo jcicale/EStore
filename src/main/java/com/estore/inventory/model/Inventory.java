@@ -16,7 +16,8 @@ import org.springframework.hateoas.ResourceSupport;
 @Entity
 @Table(name = "tblInventory")
 @NamedQueries({
-		@NamedQuery(query = "FROM Inventory i WHERE i.quantity > 0 AND i.product.title LIKE :keywords ORDER BY i.price", name = "Inventory.list_Inventory_by_keywords") })
+		@NamedQuery(query = "FROM Inventory i WHERE i.quantity > 0 AND i.product.title LIKE :keywords ORDER BY i.price", name = "Inventory.list_Inventory_by_keywords"),
+		@NamedQuery(query = "FROM Inventory i WHERE i.partner.partnerId = :partnerId", name = "Inventory.list_Inventory_by_partnerId")})
 
 public class Inventory extends ResourceSupport {
 	@Id
