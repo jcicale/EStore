@@ -10,6 +10,18 @@ $(function() {
 		contentType : "application/json"
 	});
 	refreshContactsList();
+	$("#product-search").on("keyup", function(e) {
+		e.preventDefault;
+		if (e.keyCode == 13) {
+			var searchTerm = $("#product-search").val();
+			var url = "inventory/product?title=" + searchTerm;
+			showDialogBlockDialog("Loading Data from Server");
+			$.getJSON(url).done(function(data) {
+				console.log(data);
+				drawSearchResults(data);
+			});
+		}
+	});
 });
 function loadTestValues(){
 	$("#credit-card-number").val("1234567890123456");

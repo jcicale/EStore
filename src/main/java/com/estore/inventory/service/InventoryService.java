@@ -30,7 +30,7 @@ public class InventoryService {
 		Iterable<Inventory> listInventory = inventoryDao.list_Inventory_by_keywords("%" + keywords.trim().replace(" ", "%") + "%");
 		for (Inventory inventory : listInventory) {
 			inventory.add(linkTo(InventoryResource.class).slash(inventory.getInventoryId()).withSelfRel());
-
+			inventory.add(new SuperLink(linkTo(OrderResource.class).withRel("save"),"POST"));
 		}
 		return listInventory;
 	}
