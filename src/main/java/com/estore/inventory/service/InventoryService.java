@@ -1,6 +1,7 @@
 package com.estore.inventory.service;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,15 +39,17 @@ public class InventoryService {
 	public Iterable<Inventory> list_Inventory_by_partnerId(Long partnerId) {
 		Iterable<Inventory> listInventory = inventoryDao.list_Inventory_by_partnerId(partnerId);
 		for (Inventory inventory : listInventory) {
-			//inventory.add(new SuperLink(linkTo(InventoryResource.class).withRel("save"),"POST"));
+			inventory.add(new SuperLink(
+					linkTo(methodOn(InventoryResource.class).increaseByOne(inventory.getInventoryId())).withRel("increase"),
+					"PUT"));
 		}
 		return listInventory;
 	}
 
 	public Inventory getInventoryById(Long inventoryId) {
 		Inventory inventory = inventoryDao.findOne(inventoryId);
-		inventory.add(linkTo(InventoryResource.class).slash(inventory.getInventoryId()).withSelfRel());
-		inventory.add(new SuperLink(linkTo(OrderResource.class).withRel("save"),"POST"));
+//		inventory.add(linkTo(InventoryResource.class).slash(inventory.getInventoryId()).withSelfRel());
+//		inventory.add(new SuperLink(linkTo(OrderResource.class).withRel("save"),"POST"));
 		return inventory;
 	}
 
@@ -60,6 +63,16 @@ public class InventoryService {
 		inventory = inventoryDao.save(inventory);
 		return inventory != null;
 	}
+	
+	public Inventory increaseByOne(Inventory inventory) {
+		inventory.setQuantity(inventory.getQuantity() + 1);
+		inventory = inventoryDao.save(inventory);
+		inventory.add(new SuperLink(
+				linkTo(methodOn(InventoryResource.class).increaseByOne(inventory.getInventoryId())).withRel("increase"),
+				"PUT"));
+		return inventory;
+	}
+	
 
 	public boolean deleteInventory(Long inventoryId) {
 		try {

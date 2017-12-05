@@ -29,10 +29,10 @@ function drawSearchResults(data) {
 	th4.appendTo(tr);
 	tr.appendTo($("#orders"));
 	for ( var item in data) {
-		var order = data[item];
-		var tr = $("<tr>").attr("id", "orderId_" + order.orderId);
+		var inventory = data[item];
+		var tr = $("<tr>").attr("id", "inventoryId_" + inventory.inventoryId);
 		tr.attr("class", "order");
-		drawOrder(order, tr);
+		drawOrder(inventory, tr);
 		tr.appendTo($("#orders"));
 	}
 	hideDialogBlockDialog();
@@ -106,7 +106,7 @@ function proccesOrder(rel, href, method) {
 				console.log(result);
 				hideDialogBlockDialog();
 				showDialog("Request Completed", function() {
-					drawOrder(result, $("#orderId_" + result.orderId));
+					drawOrder(result, $("#inventoryId_" + result.inventoryId));
 				});
 			},
 			error : function(request, msg, error) {
