@@ -1,7 +1,6 @@
 package com.estore.order.service;
 
 import java.util.Calendar;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,14 +50,6 @@ public class OrderDetailService {
 			return orderDetail != null;
 		}
 		return false;
-	}
-
-	public List<OrderDetail> listAllByPartnerId(Long partnerId) {
-		return orderDetailDao.list_OrderDetails_by_partnerId(partnerId);
-	}
-
-	public List<OrderDetail> listAllByPartnerId_OrderState(Long partnerId, String orderState) {
-		return orderDetailDao.list_OrderDetails_by_partnerId_and_orderState(partnerId, orderState);
 	}
 
 	public boolean orderDelivered(ShippingOrder orderDetail, Calendar delivered) {

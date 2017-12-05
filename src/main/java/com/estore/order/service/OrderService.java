@@ -56,7 +56,7 @@ public class OrderService {
 						linkTo(methodOn(OrderResource.class).cancelOrder(order.getOrderId())).withRel("cancel"),
 						"PUT"));
 			} else {
-				if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP)) {
+				if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_VERIFIED)) {
 					order.add(new SuperLink(
 							linkTo(methodOn(OrderResource.class).fulfillOrder(order.getOrderId())).withRel("fulfill"),
 							"PUT"));
@@ -65,6 +65,10 @@ public class OrderService {
 
 		}
 		return list;
+	}
+
+	public List<Order> listAllByPartnerId(Long partnerId) {
+		return orderDao.list_Orders_by_partnerId(partnerId);
 	}
 
 	public Order getOrderById(Long orderId) {
@@ -105,7 +109,7 @@ public class OrderService {
 				}
 			}
 			order.setPaymentStatus(EStoreConstants.PAYMENT_STATUS_VERIFIED);
-			order.setOrderState(EStoreConstants.ORDER_STATUS_READY_TO_SHIP);
+			order.setOrderState(EStoreConstants.ORDER_STATUS_VERIFIED);
 			order = orderDao.save(order);
 			order.add(new SuperLink(
 					linkTo(methodOn(OrderResource.class).fulfillOrder(order.getOrderId())).withRel("fulfill"), "PUT"));
@@ -115,7 +119,7 @@ public class OrderService {
 	}
 
 	public Order fulfillOrder(Order order) {
-		if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_READY_TO_SHIP)) {
+		if (order.getOrderState().equals(EStoreConstants.ORDER_STATUS_VERIFIED)) {
 			if (order.getOrderDetails() != null && order.getOrderDetails().size() > 0) {
 				for (OrderDetail orderDetail : order.getOrderDetails()) {
 					if (orderDetail.getInventory().getQuantity() < orderDetail.getQuantity()) {
@@ -135,7 +139,7 @@ public class OrderService {
 					}
 				}
 			}
-			order.setOrderState(EStoreConstants.ORDER_STATUS_FULFILLED);
+			order.setOrderState(EStoreConstants.ORDER_STATUS_COMPLETED);
 			if (order.getPaymentMethod() != null && order.getPaymentMethod().size() > 0) {
 				for (PaymentMethod paymentMethod : order.getPaymentMethod()) {
 					paymentMethod.setPaymentStatus(EStoreConstants.PAYMENT_STATUS_PAID);

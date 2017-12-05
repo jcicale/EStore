@@ -30,6 +30,11 @@ public class OrderResource {
 		return orderService.listAllOrders();
 	}
 
+	@GetMapping("partnerId/{partnerId}")
+	public Iterable<Order> listAllByPartnerId(@PathVariable("partnerId") Long partnerId) {
+		return orderService.listAllByPartnerId(partnerId);
+	}
+
 	@GetMapping("{orderId}")
 	public Order getOrderById(@PathVariable("orderId") Long orderId) {
 		return orderService.getOrderById(orderId);
@@ -46,7 +51,7 @@ public class OrderResource {
 	public ResponseEntity<Order> acceptPayment(@PathVariable("orderId") Long orderId) {
 		Order order = orderService.acceptPayment(orderService.getOrderById(orderId));
 		if (order != null) {
-			return new ResponseEntity<Order>(order,HttpStatus.OK);
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
 		}
 		return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
 	}
@@ -55,7 +60,7 @@ public class OrderResource {
 	public ResponseEntity<Order> fulfillOrder(@PathVariable("orderId") Long orderId) {
 		Order order = orderService.fulfillOrder(orderService.getOrderById(orderId));
 		if (order != null) {
-			return new ResponseEntity<Order>(order,HttpStatus.OK);
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
 		}
 		return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
 	}
@@ -65,7 +70,7 @@ public class OrderResource {
 			@PathVariable("orderDetailId") Long orderDetailId) {
 		Order order = orderService.cancelOrderDetail(orderService.getOrderById(orderId), orderDetailId);
 		if (order != null) {
-			return new ResponseEntity<Order>(order,HttpStatus.OK);
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
 		}
 		return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
 	}
@@ -84,7 +89,7 @@ public class OrderResource {
 	public ResponseEntity<Order> cancelOrder(@PathVariable("orderId") Long orderId) {
 		Order order = orderService.cancelOrder(orderService.getOrderById(orderId));
 		if (order != null) {
-			return new ResponseEntity<Order>(order,HttpStatus.OK);
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
 		}
 		return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
 	}

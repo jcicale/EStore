@@ -1,5 +1,6 @@
 package com.estore;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -46,6 +47,13 @@ public class OrderResourceTests {
 	private MockMvc mvc;
 
 	@Test
+	public void listAllByPartnerIdTest() throws Exception {
+		mvc.perform(get("/order/partnerId/1")).andExpect(status().isOk())
+				.andExpect(jsonPath("$", Matchers.notNullValue()));
+	}
+
+	@Ignore
+	@Test
 	public void addOrderTest() throws Exception {
 		Customer customer = customerService.getCustomerById(Long.valueOf(1));
 		Inventory inventory = inventoryService.getInventoryById(Long.valueOf(1));
@@ -58,33 +66,37 @@ public class OrderResourceTests {
 		OrderRequest orderRequest = new OrderRequest(orderDetailRequest, customer.getCustomerId(),
 				customer.getBillingAddress().getAddressId(), paymentMethodRequest);
 		String jsonObject = EStoreUtils.asJsonString(orderRequest);
-		mvc.perform(post("/order").content(jsonObject)
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		mvc.perform(post("/order").content(jsonObject).contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.orderDetails[0].inventory.inventoryId", Matchers.is(1)));
 	}
 
-	@Ignore @Test
+	@Ignore
+	@Test
 	public void acceptOrderPaymentTest() throws Exception {
 		mvc.perform(put("/order/1/accept")).andExpect(status().isOk());
 	}
-	
-	@Ignore @Test
+
+	@Ignore
+	@Test
 	public void fulfillOrderTest() throws Exception {
 		mvc.perform(put("/order/1/fulfill")).andExpect(status().isOk());
 	}
-	
-	@Ignore @Test
+
+	@Ignore
+	@Test
 	public void shipOrderDetailTest() throws Exception {
 		mvc.perform(put("/order/15/orderDetail/5/ship/999999999999")).andExpect(status().isOk());
 	}
-	
-	@Ignore @Test
+
+	@Ignore
+	@Test
 	public void cancelOrderDetailTest() throws Exception {
 		mvc.perform(put("/order/1/orderDetail/1/cancel")).andExpect(status().isOk());
 	}
-	
-	
-	@Ignore @Test
+
+	@Ignore
+	@Test
 	public void cancelOrderTest() throws Exception {
 		mvc.perform(put("/order/5/cancel")).andExpect(status().isOk());
 	}

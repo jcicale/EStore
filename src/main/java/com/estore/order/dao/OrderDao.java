@@ -13,4 +13,5 @@ public interface OrderDao extends CrudRepository<Order, Long> {
 	List<Order> list_Orders_by_customerId_and_orderState(@Param("customerId") Long customerId,
 			@Param("orderState") String orderState);
 
+	List<Order> list_Orders_by_partnerId(@Param("partnerId") Long partnerId);
 }

@@ -14,9 +14,10 @@ public class EStoreConstants {
 	public static final String PAYMENT_STATUS_PARTIALLY_REFUNDED = "Partially Refunded";
 	// ORDER STATUS
 	public static final String ORDER_STATUS_PENDING = "Pending";
+	public static final String ORDER_STATUS_VERIFIED = "Verified";
+	public static final String ORDER_STATUS_COMPLETED = "Completed";
 	public static final String ORDER_STATUS_READY_TO_SHIP = "Ready to Ship";
 	public static final String ORDER_STATUS_READY_TO_PICK_UP = "Ready to Pickup";
-	public static final String ORDER_STATUS_FULFILLED = "Fulfilled";
 	public static final String ORDER_STATUS_SHIPPED = "Shipped";
 	public static final String ORDER_STATUS_TRANSIT = "Transit";
 	public static final String ORDER_STATUS_DELIVERED = "Delivered";
