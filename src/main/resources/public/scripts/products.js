@@ -27,10 +27,10 @@ function drawSearchResults(data) {
 	th3.appendTo(tr);
 	tr.appendTo($("#orders"));
 	for ( var item in data) {
-		var order = data[item];
-		var tr = $("<tr>").attr("id", "orderId_" + order.orderId);
+		var product = data[item];
+		var tr = $("<tr>").attr("id", "recordId_" + product.productId);
 		tr.attr("class", "order");
-		drawOrder(order, tr);
+		drawRecord(product, tr);
 		tr.appendTo($("#orders"));
 	}
 	hideDialogBlockDialog();
@@ -64,7 +64,7 @@ function getClassesForAction(action) {
 	}
 }
 
-function drawOrder(product, parent) {
+function drawRecord(product, parent) {
 	parent.empty();
 	$("<td class='order-item'>").html(product.productId).appendTo(parent);
 	$("<td class='order-item'>").html(product.title).appendTo(parent);
@@ -103,7 +103,11 @@ function proccesOrder(rel, href, method) {
 				console.log(result);
 				hideDialogBlockDialog();
 				showDialog("Request Completed", function() {
-					drawOrder(result, $("#orderId_" + result.orderId));
+					if(!result){
+						refreshList();
+					}else{
+						drawRecord(result, $("#recordId_" + result.productId));
+					}
 				});
 			},
 			error : function(request, msg, error) {
