@@ -42,9 +42,7 @@ Database: estore
 User: estore  
 Password: estore  
 
-## Description
-Use the case study material as a requirement. Your approach is to provide web service APIs for all functionalities that will provide access to your items that you will sell and to provide your partners to be able to add their inventories to be sold on your site using APIs. We will concentrate developing services for the following:  
-### 1. Your web service functionalities to sell items would include functionalities such as:
+### 1. Our web service functionalities to sell items includes functionalities such as:
 #### a. Search item database by product
 ##### Description: 
 This method performs a search over the title column of product table joining it with inventory and verifying the quantity is bigger than 0  
