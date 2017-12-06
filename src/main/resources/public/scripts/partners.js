@@ -3,6 +3,11 @@ $(function() {
 	$.ajaxSetup({
 		contentType : "application/json"
 	});
+	var userId = getCookie("userId");
+	if(userId == 0 || userId == null  || userId == 'undefined'){
+		window.location = 'login.html';
+	}
+	partnerId = userId;
 	refreshOrdersList();
 });
 function refreshOrdersList() {
