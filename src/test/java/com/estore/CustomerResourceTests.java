@@ -25,12 +25,21 @@ public class CustomerResourceTests {
 	private MockMvc mvc;
 
 	@Test
-	public void listCustomers() throws Exception {
-		LoginRepresentation loginRepresentation = new LoginRepresentation(null, "julia.cicale", null, "", null);
+	public void userLoginCustomer() throws Exception {
+		LoginRepresentation loginRepresentation = new LoginRepresentation(null, "julia.cicale", "", "julia.cicale", "");
 		String jsonObject = EStoreUtils.asJsonString(loginRepresentation);
 		mvc.perform(post("/customer/userLogin").content(jsonObject).contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.rol", Matchers.is("customer")));
+	}
+	
+	@Test
+	public void userLoginPartner() throws Exception {
+		LoginRepresentation loginRepresentation = new LoginRepresentation(null, "ebay", "", "ebay12345", "");
+		String jsonObject = EStoreUtils.asJsonString(loginRepresentation);
+		mvc.perform(post("/customer/userLogin").content(jsonObject).contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.rol", Matchers.is("partner")));
 	}
 
 }

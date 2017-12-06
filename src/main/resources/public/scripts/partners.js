@@ -48,6 +48,10 @@ function getClassesForOrderState(orderState) {
 			return "order-item red";
 		case "Fulfilled":
 			return "order-item green";
+		case "Ready to Pickup":
+			return "order-item green";
+		case "Delivered":
+			return "order-item green";
 		case "Pending":
 			return "order-item teal";
 		case "Ready to Ship":
@@ -62,7 +66,7 @@ function getClassesForAction(action) {
 		case "cancel":
 			return "link red";
 		case "accept":
-			return "link blue";
+			return "link";
 		case "fulfill":
 			return "link green";
 		default:

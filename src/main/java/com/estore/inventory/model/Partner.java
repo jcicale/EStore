@@ -3,6 +3,8 @@ package com.estore.inventory.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.springframework.hateoas.ResourceSupport;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tblPartner")
+@NamedQueries({
+	@NamedQuery(query = "FROM Partner p WHERE p.userName = :userName", name = "Partner.list_Partner_by_userName") })
 public class Partner extends ResourceSupport {
 	@Id
 	@GeneratedValue

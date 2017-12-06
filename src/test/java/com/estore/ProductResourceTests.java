@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class ProductResourceTests {
 	private MockMvc mvc;
 
 	@Test
+	@Ignore
 	public void listProducts() throws Exception {
 		mvc.perform(get("/product")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.notNullValue()));
 	}

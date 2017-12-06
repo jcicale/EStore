@@ -7,6 +7,9 @@ public class LoginRepresentation {
 	private String password;
 	private String rol;
 
+	public LoginRepresentation() {
+		
+	}
 	
 	public LoginRepresentation(Long userId, String userName, String name, String password, String rol) {
 		this.userId = userId;

@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.estore.inventory.model.Inventory;
 import com.estore.inventory.service.InventoryService;
-import com.estore.order.model.Order;
 
-@SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("inventory")
 public class InventoryResource {
@@ -45,13 +43,13 @@ public class InventoryResource {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity updateInventory(@RequestBody Inventory inventory) {
+	public ResponseEntity<String> updateInventory(@RequestBody Inventory inventory) {
 		if (inventoryService.updateInventory(inventory)) {
-			return new ResponseEntity(HttpStatus.OK);
+			return new ResponseEntity<String>(HttpStatus.OK);
 		}
-		return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@RequestMapping(value = "{inventoryId}/increase", method = RequestMethod.PUT)
 	public ResponseEntity<Inventory> increaseByOne(@PathVariable("inventoryId") Long inventoryId) {
 		Inventory inventory = inventoryService.increaseByOne(inventoryService.getInventoryById(inventoryId));

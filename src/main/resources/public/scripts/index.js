@@ -4,6 +4,11 @@ var customerId = 1;
 var billingAddressId = 2;
 var shippingAddressId = 1;
 $(function() {
+	var userId = getCookie("userId");
+	if(userId == 0 || userId == null  || userId == 'undefined'){
+		window.location = 'login.html';
+	}
+	customerId = userId;
 	list = $('#list');
 	form = $('#form');
 	$.ajaxSetup({
@@ -22,6 +27,21 @@ $(function() {
 		}
 	});
 });
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 function loadTestValues(){
 	$("#credit-card-number").val("1234567890123456");
 	$("#name-on-card").val("John Jones");
@@ -264,7 +284,7 @@ function placeOrder(submitURL, inventoryId) {
 	$.post("order", JSON.stringify(order), "json").done(function(data) {
 		hideDialogBlockDialog();
 		showDialog("Order Placed", function() {
-			window.location = 'customer.html'
+			window.location = 'customers.html'
 			//refreshContactsList();
 		});
 

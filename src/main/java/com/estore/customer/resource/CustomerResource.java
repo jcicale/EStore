@@ -1,5 +1,8 @@
 package com.estore.customer.resource;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +35,10 @@ public class CustomerResource {
 	}
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
-	public ResponseEntity<LoginRepresentation> userLogin(@RequestBody LoginRepresentation loginRepresentation) {
+	public ResponseEntity<LoginRepresentation> userLogin(@RequestBody LoginRepresentation loginRepresentation, HttpServletResponse response) {
 		loginRepresentation = customerService.userLogin(loginRepresentation);
 		if (loginRepresentation != null) {
+			response.addCookie(new Cookie("userId", String.valueOf(loginRepresentation.getUserId())));
 			return new ResponseEntity<LoginRepresentation>(loginRepresentation, HttpStatus.OK);
 		}
 		return new ResponseEntity<LoginRepresentation>(HttpStatus.BAD_REQUEST);

@@ -1,4 +1,8 @@
 $(function(){
+	setCookie("userId", 0, 1);
+	$.ajaxSetup({
+		contentType : "application/json"
+	});
 	$.widget( "custom.iconselectmenu", $.ui.selectmenu, {
 	      _renderItem: function( ul, item ) {
 	        var li = $( "<li>" ),
@@ -33,10 +37,42 @@ $(function(){
 	});
 	$("#submit-login").on("click", function(event) {
 		event.preventDefault();
-		//add login stuff
+		verifyLogin();
 	});
 	$("#submit-sign-up").on("click", function(event) {
 		event.preventDefault();
 		//add sign up stuff
 	});
 });
+function verifyLogin(){
+	var loginRepresentation = {
+			"userName" : $('#user-name').val(),
+			"password" : $('#password').val()
+	}
+	console.log(loginRepresentation);
+	showDialogBlockDialog("Proccessing");
+	$.post("customer/userLogin", JSON.stringify(loginRepresentation), "json").done(function(data) {
+		hideDialogBlockDialog();
+		setCookie("userId", data.userId, 1);
+		var userId = getCookie("userId");
+		console.log(userId);
+		if(data.rol == "customer"){
+			window.location = 'index.html';
+		}else{
+			if(data.rol == "representative"){
+				window.location = 'representatives.html';
+			}else{
+				if(data.rol == "partner"){
+					window.location = 'partners.html';
+				}else{
+					showDialog("Bad Login", function() {
+						
+					});
+				}
+			}
+		}
+		console.log(data);
+		
+
+	});
+}

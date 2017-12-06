@@ -37,7 +37,7 @@ public class MainController {
 		Customer juliaCicale = customerService.getCustomerById(Long.valueOf(1));
 		if (juliaCicale == null) {
 			juliaCicale = customerService.addCustomer(
-					new Customer(null, "Cicale", "Julia", "julia.cicale", EStoreUtils.encriptText("julia.cicale"),
+					new Customer(null, "Cicale", "Julia", "julia.cicale", "julia.cicale",
 							new Address(null, "123 Home St.", "Unit 2", "Chicago", "IL", "60657"),
 							new Address(null, "123 Business Rd.", "Ste 500", "Chicago", "IL", "60601")));
 			// Adding products
@@ -55,7 +55,7 @@ public class MainController {
 			// Adding Partners
 			System.out.println("Adding Partner Amazon");
 			Partner amazon = partnerService
-					.addPartner(new Partner(null, "Amazon", "amazon", EStoreUtils.encriptText("amazon12345")));
+					.addPartner(new Partner(null, "Amazon", "amazon", "amazon12345"));
 			Inventory amazonInv_1 = inventoryService.addInventory(new Inventory(null, amazon, fitbitAlta, 150.0, 10));
 			Inventory amazonInv_2 = inventoryService.addInventory(new Inventory(null, amazon, headphones, 80.0, 10));
 			Inventory amazonInv_3 = inventoryService.addInventory(new Inventory(null, amazon, laptopBag, 15.0, 10));
@@ -63,7 +63,7 @@ public class MainController {
 
 			System.out.println("Adding Partner Ebay");
 			Partner ebay = partnerService
-					.addPartner(new Partner(null, "Ebay", "ebay", EStoreUtils.encriptText("ebay12345")));
+					.addPartner(new Partner(null, "Ebay", "ebay", "ebay12345"));
 			Inventory ebayInv_1 = inventoryService.addInventory(new Inventory(null, ebay, fitbitAlta, 160.0, 15));
 			Inventory ebayInv_2 = inventoryService.addInventory(new Inventory(null, ebay, headphones, 70.0, 15));
 			Inventory ebayInv_3 = inventoryService.addInventory(new Inventory(null, ebay, laptopBag, 20.0, 15));
