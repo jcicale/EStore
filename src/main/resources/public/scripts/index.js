@@ -264,7 +264,7 @@ function placeOrder(submitURL, inventoryId) {
 	$.post("order", JSON.stringify(order), "json").done(function(data) {
 		hideDialogBlockDialog();
 		showDialog("Order Placed", function() {
-			window.location = 'customer.html'
+			window.location = 'customers.html'
 			//refreshContactsList();
 		});
 

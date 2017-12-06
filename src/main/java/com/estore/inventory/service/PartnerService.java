@@ -28,9 +28,9 @@ public class PartnerService {
 		return partner;
 	}
 
-	public boolean updatePartner(Partner partner) {
+	public Partner updatePartner(Partner partner) {
 		partner = partnerDao.save(partner);
-		return partner != null;
+		return partner;
 	}
 
 	public boolean deletePartner(Long partnerId) {

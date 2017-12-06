@@ -48,6 +48,10 @@ function getClassesForOrderState(orderState) {
 			return "order-item red";
 		case "Fulfilled":
 			return "order-item green";
+		case "Shipped":
+			return "order-item green";
+		case "Ready to Pickup":
+			return "order-item green";
 		case "Pending":
 			return "order-item teal";
 		case "Ready to Ship":
